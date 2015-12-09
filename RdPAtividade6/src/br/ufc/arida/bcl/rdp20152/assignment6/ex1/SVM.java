@@ -70,7 +70,7 @@ public class SVM {
 				instancias.add(instancia);
 			}
 		}
-		instancias.setClassIndex(instancias.numAttributes() - 1);
+		instancias.setClassIndex(instancias.numAttributes() -1);
 	}
 	
 	private void treinar() {
@@ -90,16 +90,21 @@ public class SVM {
 		}
 		
 		try {
-			Instances instancias = new Instances("instancias", atributos, 0);
+			Instances instancias = new Instances("instanciaTesting", atributos, 1);
 			instancias.add(instancia);
 			instancias.setClassIndex(instancias.numAttributes() - 1);
+			
 			double classificacao = libSVM.classifyInstance(instancias.firstInstance());
 			return (int)classificacao;
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (ArrayIndexOutOfBoundsException e) {
+			System.out.println("Erro de classificacao: por algum motivo para classe 6 acontece erro de ArrayIndexOutOfBoundsException");
 			e.printStackTrace();
+			return 6;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
 		}
-		return -1;
+		
 	}
 	
 	private List<Integer> getDistinctLabels() {

@@ -1,5 +1,6 @@
 package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.plaf.synth.SynthSeparatorUI;
@@ -58,8 +59,14 @@ public class Exercicio1 {
 		RealVector labelsLearning = f.matrixToLabels(Tl);
 		SVM svm = new SVM(Xl, labelsLearning);
 		
-		int classificacao = svm.classificar(Tl.getRowVector(0));
-		System.out.println("classificacao: " + classificacao);
+		List<Integer> labelsPreditos = new ArrayList<Integer>();
+		for (int i = 0; i < Xl.getRowDimension(); i++) {
+			RealVector elemento = Xl.getRowVector(i);
+			int classificacao = svm.classificar(elemento);
+			labelsPreditos.add(classificacao);
+		}
+
+		System.out.println(labelsPreditos);
 		
 	}
 
