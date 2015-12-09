@@ -40,6 +40,20 @@ public class Exercicio1 {
 		List<Integer> ordemAleatoria = f.gerarOrdemRandomica(X.getRowDimension());
 		RealMatrix X2 = f.matrizParaOrdemEspecifica(X1, ordemAleatoria);
 		RealMatrix T2 = f.matrizParaOrdemEspecifica(T, ordemAleatoria);
+		
+		/*
+		 * Exercicio 1.7
+		 */
+		int numeroDeLinhasLearning = (int)(X2.getRowDimension() * 80 / 100);
+		RealMatrix Xl = X2.getSubMatrix(0, numeroDeLinhasLearning - 1, 0, X2.getColumnDimension() - 1);
+		RealMatrix Xt = X2.getSubMatrix(numeroDeLinhasLearning, X2.getRowDimension() -1, 0, X2.getColumnDimension() - 1);
+		RealMatrix Tl = T2.getSubMatrix(0, numeroDeLinhasLearning - 1, 0, T2.getColumnDimension() -1);
+		RealMatrix Tt = T2.getSubMatrix(numeroDeLinhasLearning, T2.getRowDimension() -1, 0, T2.getColumnDimension() -1);
+	
+		/*
+		 * Exercicio 1.8
+		 */
+		
 	}
 
 }

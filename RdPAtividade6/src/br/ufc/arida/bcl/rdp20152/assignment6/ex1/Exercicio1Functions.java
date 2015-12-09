@@ -14,6 +14,8 @@ import org.apache.commons.math3.stat.descriptive.moment.Variance;
 import org.apache.commons.math3.stat.descriptive.moment.VectorialMean;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.FileHandler;
+import weka.classifiers.functions.LibSVM;
+import weka.core.Instances;
 
 public class Exercicio1Functions {
 	
@@ -93,6 +95,11 @@ public class Exercicio1Functions {
 			linha++;
 		}	
 		return R;
+	}
+	
+	public void SVM() {
+		LibSVM svm = new LibSVM();
+		
 	}
 
 }
