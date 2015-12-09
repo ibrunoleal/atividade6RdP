@@ -12,6 +12,7 @@ import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.Utils;
 
 public class SVM {
 	
@@ -94,8 +95,19 @@ public class SVM {
 			instancias.add(instancia);
 			instancias.setClassIndex(instancias.numAttributes() - 1);
 			
-			double classificacao = libSVM.classifyInstance(instancias.firstInstance());
-			return (int)classificacao;
+			double[] classificacao = libSVM.distributionForInstance(instancias.firstInstance());
+			//double classe = classificacao[Utils.maxIndex(classificacao)];
+			RealVector vtemp = new ArrayRealVector(classificacao);
+			for (int i = 0; i < vtemp.getDimension(); i++) {
+				if (vtemp.getEntry(i) == 1) {
+					return i + 1;
+				}
+			}
+			
+			return -1;
+			//double classificacao = libSVM.classifyInstance(instancias.firstInstance());
+			//classifyInstance(instancias.firstInstance());
+			//return (int)classificacao;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			System.out.println("Erro de classificacao: por algum motivo para classe 6 acontece erro de ArrayIndexOutOfBoundsException");
 			e.printStackTrace();
