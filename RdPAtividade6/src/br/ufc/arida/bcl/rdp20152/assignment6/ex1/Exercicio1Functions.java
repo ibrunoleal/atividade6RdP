@@ -64,17 +64,35 @@ public class Exercicio1Functions {
 		return R;
 	}
 	
-	public void matrixToRandomMatrixRows(RealMatrix matrix) {
-		//RealMatrix R = new Array2DRowRealMatrix(matrix.getRowDimension(), matrix.getColumnDimension());
-		
+	public List<Integer> gerarOrdemRandomica(int numeroDeElementos) {
 		List<Integer> listaDePosicoes = new ArrayList<Integer>();
-		for (int i = 0; i < matrix.getRowDimension(); i++) {
+		for (int i = 0; i < numeroDeElementos; i++) {
 			listaDePosicoes.add(i);
 		}
 		Collections.shuffle(listaDePosicoes);
-		System.out.println(listaDePosicoes);
-		
-		//return R;
+		return listaDePosicoes;
+	}
+	
+//	public RealVector vetorParaOrdemEspecifica(RealVector vetor, List<Integer> ordemDosElementos) {
+//		RealVector r = new ArrayRealVector(vetor.getDimension());
+//		int posicao = 0;
+//		for (Integer ordem : ordemDosElementos) {
+//			double elemento = vetor.getEntry(ordem);
+//			r.setEntry(posicao, elemento);
+//			posicao++;
+//		}
+//		return r;
+//	}
+	
+	public RealMatrix matrizParaOrdemEspecifica(RealMatrix matrix, List<Integer> ordemDasLinhas) {
+		RealMatrix R = new Array2DRowRealMatrix(matrix.getRowDimension(), matrix.getColumnDimension());
+		int linha = 0;
+		for (Integer ordem : ordemDasLinhas) {
+			RealVector vi = matrix.getRowVector(ordem);
+			R.setRowVector(linha, vi);
+			linha++;
+		}	
+		return R;
 	}
 
 }
