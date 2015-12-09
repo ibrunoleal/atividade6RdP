@@ -97,9 +97,18 @@ public class Exercicio1Functions {
 		return R;
 	}
 	
-	public void SVM() {
-		LibSVM svm = new LibSVM();
-		
+	public RealVector matrixToLabels(RealMatrix matrix) {
+		RealVector r = new ArrayRealVector(matrix.getRowDimension());
+		for (int i = 0; i < matrix.getRowDimension(); i++) {
+			RealVector vi = matrix.getRowVector(i);
+			for (int j = 0; j < vi.getDimension(); j++) {
+				if (vi.getEntry(j) == 1) {
+					int classe = j + 1;
+					r.setEntry(i, classe);
+				}
+			}
+		}
+		return r;
 	}
 
 }

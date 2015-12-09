@@ -2,6 +2,8 @@ package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
 
 import java.util.List;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
@@ -53,6 +55,11 @@ public class Exercicio1 {
 		/*
 		 * Exercicio 1.8
 		 */
+		RealVector labelsLearning = f.matrixToLabels(Tl);
+		SVM svm = new SVM(Xl, labelsLearning);
+		
+		int classificacao = svm.classificar(Tl.getRowVector(0));
+		System.out.println("classificacao: " + classificacao);
 		
 	}
 
