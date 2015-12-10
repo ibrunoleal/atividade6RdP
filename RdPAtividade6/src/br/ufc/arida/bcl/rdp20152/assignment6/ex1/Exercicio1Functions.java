@@ -10,7 +10,6 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
-import org.apache.commons.math3.stat.descriptive.moment.Variance;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.FileHandler;
 
@@ -151,4 +150,5 @@ public class Exercicio1Functions {
 				"\nErros: " + contErros +
 				"\ntaxa de acerto na classificacao: " + ( (contAcertos * 100.0) / n );
 	}
+	
 }

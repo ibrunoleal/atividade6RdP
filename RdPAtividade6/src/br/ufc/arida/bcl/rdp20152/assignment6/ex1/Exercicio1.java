@@ -1,16 +1,11 @@
 package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.sasl.RealmCallback;
-
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreator;
-import br.ufc.arida.bcl.rdp20152.assignment6.entidades.Matriz;
 
 
 public class Exercicio1 {
@@ -19,7 +14,7 @@ public class Exercicio1 {
 		
 		Exercicio1Functions f = new Exercicio1Functions();
 		
-		RealMatrix M = f.getDermatolgy_data();
+		//RealMatrix M = f.getDermatolgy_data();
 		
 		/*
 		 * Exercicio 1.2
@@ -64,9 +59,7 @@ public class Exercicio1 {
 		RealVector labelsLearning = f.matrixToLabels(Tl);
 		RealVector labelsTesting = f.matrixToLabels(Tt);
 		
-			/*
-			 * Utilizando SVM2		
-			 */
+		
 		RealMatrix XLearningWeka = f.unirMatrixComLabels(Xl, labelsLearning);
 		RealMatrix XTestingWeka = f.unirMatrixComLabels(Xt, labelsTesting);
 		
@@ -74,13 +67,24 @@ public class Exercicio1 {
 		arrfCreator.gerarArquivoArff(XLearningWeka, "xlearning");
 		arrfCreator.gerarArquivoArff(XTestingWeka, "xtesting");
 		
-		SVM svm2 = new SVM("data/xlearning.arff", "data/xtesting.arff");
-		RealVector labelsPreditos = svm2.getLabelsPreditos();
+		/*
+		 * Utilizando SVM		
+		 */
+		
+		SVM svm = new SVM("data/xlearning.arff", "data/xtesting.arff");
+		RealVector svmLabelsPreditos = svm.getLabelsPreditos();
+		
+		Perceptron perceptron = new Perceptron("data/xlearning.arff", "data/xtesting.arff");
+		RealVector perceptronLabelsPreditos = perceptron.getLabelsPreditos();
 
 		/*
 		 * Exercicio 1.9
 		 */
-		System.out.println(f.getClassificationAccuracy(labelsPreditos, labelsTesting));
+		System.out.println("\nSVM:");
+		System.out.println(f.getClassificationAccuracy(svmLabelsPreditos, labelsTesting));
+		System.out.println();
+		System.out.println("\nPerceptron:");
+		System.out.println(f.getClassificationAccuracy(perceptronLabelsPreditos, labelsTesting));
 	}
 
 }
