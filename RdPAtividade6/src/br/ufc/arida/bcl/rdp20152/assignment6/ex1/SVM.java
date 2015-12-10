@@ -12,56 +12,59 @@ import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
-import weka.core.Utils;
 
 public class SVM {
 	
-	RealMatrix data;
 	
-	RealVector labels;
+	private RealMatrix dataLearning;
 	
-	LibSVM libSVM;
+	private RealVector labelsLearning;
 	
-	FastVector atributos;
+	private LibSVM libSVM;
 	
-	Instances instancias;
+	/**
+	 * Deve conter o numero de atributos de informacao + 1 para a classe(label)
+	 */
+	private FastVector atributos;
 	
-	public SVM(RealMatrix data, RealVector labels) {
-		this.data = data;
-		this.labels = labels;
+	private Instances instancias;
+	
+	public SVM(RealMatrix dataLearning, RealVector labelsLearning) {
+		this.dataLearning = dataLearning;
+		this.labelsLearning = labelsLearning;
 		this.libSVM = new LibSVM();
-		atributos = new FastVector(data.getColumnDimension() + 1);
+		atributos = new FastVector(dataLearning.getColumnDimension() + 1);
 		
 		executar();
 	}
 	
 	private void executar() {
 		iniciarModeloDeAtributos();
-		instancias = new Instances("instancias", atributos, data.getRowDimension());
+		instancias = new Instances("instancias", atributos, dataLearning.getRowDimension());
 		carregarInstancias();
 		treinar();
 	}
 
 	private void iniciarModeloDeAtributos() {
 		String name = "x";
-		for (int i = 0; i < data.getColumnDimension(); i++) {
+		for (int i = 1; i <= dataLearning.getColumnDimension(); i++) {
 			Attribute atributo = new Attribute(name + i);
 			atributos.addElement(atributo);
 		}
 		
 		List<Integer> labels = getDistinctLabels();
-		FastVector fvClassVal = new FastVector(labels.size());
-		for (Integer label : labels) {
-			fvClassVal.addElement(String.valueOf(label));
+		FastVector fvClassVal = new FastVector();
+		for (int i = 1; i <= labels.size() + 1; i++) {
+			fvClassVal.addElement(String.valueOf(i));
 		}
 		Attribute classAttribute = new Attribute("classe", fvClassVal);
 		atributos.addElement(classAttribute);
 	}
 	
 	private void carregarInstancias() {
-		for (int i = 0; i < data.getRowDimension(); i++) {
-			RealVector dados = data.getRowVector(i);
-			double[] c = {labels.getEntry(i)};
+		for (int i = 0; i < dataLearning.getRowDimension(); i++) {
+			RealVector dados = dataLearning.getRowVector(i);
+			double[] c = {labelsLearning.getEntry(i)};
 			RealVector classe = new ArrayRealVector(c);
 			RealVector valores = dados.append(classe);
 
@@ -76,6 +79,8 @@ public class SVM {
 	
 	private void treinar() {
 		try {
+			//String[] options = weka.core.Utils.splitOptions("-K 0 -D 3 -split-percentage 10");
+			//libSVM.setOptions(options);
 			libSVM.setDoNotReplaceMissingValues(true);
 			libSVM.buildClassifier(instancias);
 		} catch (Exception e) {
@@ -84,34 +89,19 @@ public class SVM {
 		}
 	}
 	
-	public int classificar(RealVector elemento) {
+	public double classificar(RealVector elemento) {
 		Instance instancia = new Instance(elemento.getDimension());
 		for (int j = 0; j < elemento.getDimension(); j++) {
 			instancia.setValue((Attribute)atributos.elementAt(j), elemento.getEntry(j));
 		}
 		
 		try {
-			Instances instancias = new Instances("instanciaTesting", atributos, 1);
+			Instances instancias = new Instances("instanciaTesting", atributos, 0);
 			instancias.add(instancia);
 			instancias.setClassIndex(instancias.numAttributes() - 1);
 			
-			double[] classificacao = libSVM.distributionForInstance(instancias.firstInstance());
-			//double classe = classificacao[Utils.maxIndex(classificacao)];
-			RealVector vtemp = new ArrayRealVector(classificacao);
-			for (int i = 0; i < vtemp.getDimension(); i++) {
-				if (vtemp.getEntry(i) == 1) {
-					return i + 1;
-				}
-			}
-			
-			return -1;
-			//double classificacao = libSVM.classifyInstance(instancias.firstInstance());
-			//classifyInstance(instancias.firstInstance());
-			//return (int)classificacao;
-		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("Erro de classificacao: por algum motivo para classe 6 acontece erro de ArrayIndexOutOfBoundsException");
-			e.printStackTrace();
-			return 6;
+			double classificacao = libSVM.classifyInstance(instancias.firstInstance());
+			return classificacao;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return -1;
@@ -121,8 +111,8 @@ public class SVM {
 	
 	private List<Integer> getDistinctLabels() {
 		List<Integer> classes = new ArrayList<Integer>();
-		for (int i = 0; i < labels.getDimension(); i++) {
-			int label = (int)labels.getEntry(i);
+		for (int i = 0; i < labelsLearning.getDimension(); i++) {
+			int label = (int)labelsLearning.getEntry(i);
 			if (!classes.contains(label)) {
 				classes.add(label);
 			}

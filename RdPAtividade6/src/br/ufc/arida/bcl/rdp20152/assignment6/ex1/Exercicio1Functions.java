@@ -1,7 +1,6 @@
 package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,11 +10,8 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.Variance;
-import org.apache.commons.math3.stat.descriptive.moment.VectorialMean;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.FileHandler;
-import weka.classifiers.functions.LibSVM;
-import weka.core.Instances;
 
 public class Exercicio1Functions {
 	
@@ -32,7 +28,9 @@ public class Exercicio1Functions {
 		return dermatolgy_data;
 	}
 	
-	public RealMatrix formarMatrizT(RealVector labels, int numeroDeAtributos) {
+	public RealMatrix formarMatrizT(RealVector labels) {
+		int numeroDeAtributos = getDistinctLabels(labels).size();
+		
 		RealMatrix T = new Array2DRowRealMatrix(labels.getDimension(), numeroDeAtributos);
 		for (int i = 0; i < labels.getDimension(); i++) {
 			int label = (int)labels.getEntry(i);
@@ -111,4 +109,14 @@ public class Exercicio1Functions {
 		return r;
 	}
 
+	private List<Integer> getDistinctLabels(RealVector labels) {
+		List<Integer> classes = new ArrayList<Integer>();
+		for (int i = 0; i < labels.getDimension(); i++) {
+			int label = (int)labels.getEntry(i);
+			if (!classes.contains(label)) {
+				classes.add(label);
+			}
+		}
+		return classes;
+	}
 }

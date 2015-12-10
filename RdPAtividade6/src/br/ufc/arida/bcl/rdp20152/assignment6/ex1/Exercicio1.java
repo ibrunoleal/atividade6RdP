@@ -3,12 +3,8 @@ package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
-
-import br.ufc.arida.bcl.rdp20152.assignment6.entidades.Matriz;
 
 
 public class Exercicio1 {
@@ -30,7 +26,7 @@ public class Exercicio1 {
 		/*
 		 * Exercicio 1.4
 		 */
-		RealMatrix T = f.formarMatrizT(l, 6);
+		RealMatrix T = f.formarMatrizT(l);
 		
 		/*
 		 * Exercicio 1.5
@@ -60,13 +56,15 @@ public class Exercicio1 {
 		SVM svm = new SVM(Xl, labelsLearning);
 		
 		List<Integer> labelsPreditos = new ArrayList<Integer>();
-		for (int i = 0; i < Xl.getRowDimension(); i++) {
-			RealVector elemento = Xl.getRowVector(i);
-			int classificacao = svm.classificar(elemento);
-			labelsPreditos.add(classificacao);
+		for (int i = 0; i < Xt.getRowDimension(); i++) {
+			RealVector elemento = Xt.getRowVector(i);
+			int classe = (int)svm.classificar(elemento);
+			labelsPreditos.add(classe);
 		}
-
+		
+		RealVector labelsTesting = f.matrixToLabels(Tt);
 		System.out.println(labelsPreditos);
+		System.out.println(labelsTesting);
 		
 	}
 
