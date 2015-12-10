@@ -88,15 +88,17 @@ public class Matriz extends Array2DRowRealMatrix {
 	}
 	
 	public String toCSVString() {
+		String texto = "";
+		
 		DecimalFormat df = new DecimalFormat("0.00000");
+		
 		String atributo = "X";
 		int contAtributo = 1;
-		String texto = "";
 		for (int j = 0; j < getColumnDimension(); j++) {
 			if ( !(j == (getColumnDimension() -1)) ) {
 				texto += atributo + contAtributo + ",";
 			} else {
-				texto += atributo + contAtributo + "\n";
+				texto += "class" + "\n";
 			}
 			contAtributo++;
 		}
@@ -106,7 +108,7 @@ public class Matriz extends Array2DRowRealMatrix {
 				String elemento = df.format(getEntry(i, j));
 				
 				if (j == (getColumnDimension() -1)) {
-					texto += "\"" + getEntry(i, j) + "\"";
+					texto += elemento;
 					if (i != (getRowDimension() -1)) {
 						texto += "\n";
 					}

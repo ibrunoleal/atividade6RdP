@@ -3,9 +3,13 @@ package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.sasl.RealmCallback;
+
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
+import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreator;
 import br.ufc.arida.bcl.rdp20152.assignment6.entidades.Matriz;
 
 
@@ -56,20 +60,36 @@ public class Exercicio1 {
 		/*
 		 * Exercicio 1.8
 		 */
-		RealVector labelsLearning = f.matrixToLabels(Tl);
-		SVM svm = new SVM(Xl, labelsLearning);
 		
-		List<Integer> labelsPreditos = new ArrayList<Integer>();
-		for (int i = 0; i < Xt.getRowDimension(); i++) {
-			RealVector elemento = Xt.getRowVector(i);
-			int classe = (int)svm.classificar(elemento);
-			labelsPreditos.add(classe);
-		}
-
-
+		/*
+		 * Utilizando SVM
+		 */
+		RealVector labelsLearning = f.matrixToLabels(Tl);
+//		SVM svm = new SVM(Xl, labelsLearning);
+//		
+//		List<Integer> labelsPreditos = new ArrayList<Integer>();
+//		for (int i = 0; i < Xt.getRowDimension(); i++) {
+//			RealVector elemento = Xt.getRowVector(i);
+//			int classe = (int)svm.classificar(elemento);
+//			labelsPreditos.add(classe);
+//		}
+//
+//
 		RealVector labelsTesting = f.matrixToLabels(Tt);
-		System.out.println(labelsPreditos);
-		System.out.println(labelsTesting);
+//		System.out.println(labelsPreditos);
+//		System.out.println(labelsTesting);
+		
+		/*
+		 * Utilizando SVM2		
+		 */
+		RealMatrix XL = new Array2DRowRealMatrix(Xl.getRowDimension(), Xl.getColumnDimension() + 1);
+		for (int j = 0; j < Xl.getColumnDimension(); j++) {
+			RealVector colunaj = Xl.getColumnVector(j);
+			XL.setColumnVector(j, colunaj);
+		}
+		XL.setColumnVector(XL.getColumnDimension() -1, labelsLearning);
+		ArrfCreator arrfCreator = new ArrfCreator();
+		arrfCreator.gerarArquivoArff(XL, "arquivo");
 		
 	}
 
