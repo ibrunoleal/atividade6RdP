@@ -1,5 +1,8 @@
 package br.ufc.arida.bcl.rdp20152.assignment6.arquivos;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,22 +18,34 @@ public class ArrfCreator {
 		String texto = getNomeRelation(nomeDoArquivo);
 		texto += "\n\n";
 		
-		for (int i = 0; i < matrix.getColumnDimension() - 2; i++) {
+		for (int i = 0; i < matrix.getColumnDimension() - 1; i++) {
 			texto += getDeclaracaoDeAtributo(i+1) + "\n";
 		}
 		
 		RealVector colunaDeLabels = matrix.getColumnVector(matrix.getColumnDimension() - 1);
-		List<Double> classes = getDistinctLabels(colunaDeLabels);
+		List<Integer> classes = getDistinctLabels(colunaDeLabels);
 		texto += getDeclaracaoDeClasse(classes) + "\n\n";
 		
 		texto += getData(matrix);
-		System.out.println(texto);
+		
+		texto += "\n%\n%\n%";
+		
+		try {
+			FileWriter arquivo = new FileWriter("data/"+nomeDoArquivo+".arff");
+			PrintWriter escritorDeArquivo = new PrintWriter(arquivo);
+			escritorDeArquivo.print(texto);
+			escritorDeArquivo.close();
+			arquivo.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	private List<Double> getDistinctLabels(RealVector colunaDeLabels) {
-		List<Double> classes = new ArrayList<Double>();
+	private List<Integer> getDistinctLabels(RealVector colunaDeLabels) {
+		List<Integer> classes = new ArrayList<Integer>();
 		for (int i = 0; i < colunaDeLabels.getDimension(); i++) {
-			double label = colunaDeLabels.getEntry(i);
+			int label = (int)colunaDeLabels.getEntry(i);
 			if (!classes.contains(label)) {
 				classes.add(label);
 			}
@@ -40,15 +55,15 @@ public class ArrfCreator {
 	}
 	
 	private String getNomeRelation(String nomeDaRelacao) {
-		return "@relation " + nomeDaRelacao.toLowerCase();
+		return "@RELATION " + nomeDaRelacao.toLowerCase();
 	}
 	
 	private String getDeclaracaoDeAtributo(int numeroDoAtributo) {
-		return "@attribute X" + numeroDoAtributo + " numeric";
+		return "@ATTRIBUTE 'X" + numeroDoAtributo + "' NUMERIC";
 	}
 	
-	private String getDeclaracaoDeClasse(List<Double> classes) {
-		String texto = "@attribute class {";
+	private String getDeclaracaoDeClasse(List<Integer> classes) {
+		String texto = "@ATTRIBUTE 'class' {";
 		for (int i = 0; i < classes.size(); i++) {
 			if ( !(i == classes.size() - 1)) {
 				texto += classes.get(i) + ",";
@@ -60,17 +75,19 @@ public class ArrfCreator {
 	}
 	
 	private String getData(RealMatrix matrix) {
-		//DecimalFormat df = new DecimalFormat("0.00000");
-		String texto = "@data\n";
+		DecimalFormat df = new DecimalFormat("0.00000");
+		String texto = "@DATA\n";
 		for (int i = 0; i < matrix.getRowDimension(); i++) {
 			for (int j = 0; j < matrix.getColumnDimension(); j++) {
-				String elemento = String.valueOf(matrix.getEntry(i, j));
-				texto += elemento;
+				String elemento = String.valueOf(df.format(matrix.getEntry(i, j)));
+				
 				if (j == (matrix.getColumnDimension() -1)) {
+					texto += (int)Double.parseDouble(elemento);
 					if (i != (matrix.getRowDimension() -1)) {
 						texto += "\n";
 					}
 				} else {
+					texto += elemento;
 					texto += ",";
 				}
 			}

@@ -82,14 +82,10 @@ public class Exercicio1 {
 		/*
 		 * Utilizando SVM2		
 		 */
-		RealMatrix XL = new Array2DRowRealMatrix(Xl.getRowDimension(), Xl.getColumnDimension() + 1);
-		for (int j = 0; j < Xl.getColumnDimension(); j++) {
-			RealVector colunaj = Xl.getColumnVector(j);
-			XL.setColumnVector(j, colunaj);
-		}
-		XL.setColumnVector(XL.getColumnDimension() -1, labelsLearning);
+		RealMatrix XLearningWeka = f.unirMatrixComLabels(Xl, labelsLearning);
+		
 		ArrfCreator arrfCreator = new ArrfCreator();
-		arrfCreator.gerarArquivoArff(XL, "arquivo");
+		arrfCreator.gerarArquivoArff(XLearningWeka, "xlearning");
 		
 	}
 

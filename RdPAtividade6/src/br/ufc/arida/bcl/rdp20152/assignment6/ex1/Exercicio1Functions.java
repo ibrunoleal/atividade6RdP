@@ -120,4 +120,14 @@ public class Exercicio1Functions {
 		Collections.sort(classes);
 		return classes;
 	}
+	
+	public RealMatrix unirMatrixComLabels(RealMatrix matrix, RealVector labels) {
+		RealMatrix R = new Array2DRowRealMatrix(matrix.getRowDimension(), matrix.getColumnDimension() + 1);
+		for (int j = 0; j < matrix.getColumnDimension(); j++) {
+			RealVector colunaj = matrix.getColumnVector(j);
+			R.setColumnVector(j, colunaj);
+		}
+		R.setColumnVector(R.getColumnDimension() -1, labels);
+		return R;
+	}
 }
