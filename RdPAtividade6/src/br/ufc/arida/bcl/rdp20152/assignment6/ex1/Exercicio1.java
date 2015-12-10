@@ -6,12 +6,16 @@ import java.util.List;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
+import br.ufc.arida.bcl.rdp20152.assignment6.entidades.Matriz;
+
 
 public class Exercicio1 {
 
 	public static void main(String[] args) {
 		
 		Exercicio1Functions f = new Exercicio1Functions();
+		
+		RealMatrix M = f.getDermatolgy_data();
 		
 		/*
 		 * Exercicio 1.2
@@ -61,7 +65,8 @@ public class Exercicio1 {
 			int classe = (int)svm.classificar(elemento);
 			labelsPreditos.add(classe);
 		}
-		
+
+
 		RealVector labelsTesting = f.matrixToLabels(Tt);
 		System.out.println(labelsPreditos);
 		System.out.println(labelsTesting);

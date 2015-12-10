@@ -1,5 +1,8 @@
 package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,6 +15,7 @@ import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.Variance;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.FileHandler;
+import br.ufc.arida.bcl.rdp20152.assignment6.entidades.Matriz;
 
 public class Exercicio1Functions {
 	
@@ -118,5 +122,25 @@ public class Exercicio1Functions {
 			}
 		}
 		return classes;
+	}
+	
+	public RealMatrix gerarArquivoWekaCSV(RealMatrix data, RealVector label, String nomeDoArquivo) {
+		RealMatrix R = new Array2DRowRealMatrix(data.getRowDimension(), data.getColumnDimension() + 1);
+		
+		for (int j = 0; j < data.getColumnDimension(); j++) {
+			R.setColumnVector(j, data.getColumnVector(j));
+		}
+		R.setColumnVector(data.getColumnDimension(), label);
+		String textoDoArquivo = new Matriz(R).toCSVString();
+		try {
+			FileWriter arquivo = new FileWriter("data/" + nomeDoArquivo + ".csv");
+			PrintWriter escritorDeArquivo = new PrintWriter(arquivo);
+			escritorDeArquivo.print(textoDoArquivo);
+			escritorDeArquivo.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return R;
 	}
 }

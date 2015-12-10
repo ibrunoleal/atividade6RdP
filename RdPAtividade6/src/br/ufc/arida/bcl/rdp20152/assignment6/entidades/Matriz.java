@@ -87,6 +87,40 @@ public class Matriz extends Array2DRowRealMatrix {
 		return texto;
 	}
 	
+	public String toCSVString() {
+		DecimalFormat df = new DecimalFormat("0.00000");
+		String atributo = "X";
+		int contAtributo = 1;
+		String texto = "";
+		for (int j = 0; j < getColumnDimension(); j++) {
+			if ( !(j == (getColumnDimension() -1)) ) {
+				texto += atributo + contAtributo + ",";
+			} else {
+				texto += atributo + contAtributo + "\n";
+			}
+			contAtributo++;
+		}
+		
+		for (int i = 0; i < getRowDimension(); i++) {
+			for (int j = 0; j < getColumnDimension(); j++) {
+				String elemento = df.format(getEntry(i, j));
+				
+				if (j == (getColumnDimension() -1)) {
+					texto += "\"" + getEntry(i, j) + "\"";
+					if (i != (getRowDimension() -1)) {
+						texto += "\n";
+					}
+				} else {
+					texto += elemento;
+					texto += ",";
+				}
+				
+			}
+		}
+		//texto += "\n\\end{pmatrix}\n$";
+		return texto;
+	}
+	
 	/**
 	 * Metodo auxiliar para formatacao de saída da matriz.
 	 * Recupera a quantidade de digitos do elemento da matriz com a
