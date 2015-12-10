@@ -85,6 +85,16 @@ public class Exercicio1 {
 		System.out.println();
 		System.out.println("\nPerceptron:");
 		System.out.println(f.getClassificationAccuracy(perceptronLabelsPreditos, labelsTesting));
+		
+		int[] labelsL = new int[labelsLearning.getDimension()];
+		for (int i = 0; i < labelsLearning.getDimension(); i++) {
+			labelsL[i] = (int)labelsLearning.getEntry(i);
+		}
+		LDA lda = new LDA(Xl.getData(), labelsL, true);
+		
+		RealVector vteste = Xt.getRowVector(0);
+		int predicao = lda.predict(vteste.toArray());
+		System.out.println(predicao);
 	}
 
 }
