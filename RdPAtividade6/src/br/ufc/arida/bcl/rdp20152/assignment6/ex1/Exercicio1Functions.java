@@ -9,6 +9,7 @@ import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 import org.apache.commons.math3.stat.descriptive.moment.Variance;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.FileHandler;
@@ -54,11 +55,15 @@ public class Exercicio1Functions {
 			mean.setData(matrix.getColumnVector(j).toArray());
 			double u = mean.evaluate();
 			
-			Variance variance = new Variance();
-			variance.setData(matrix.getColumnVector(j).toArray());
-			double v = variance.evaluate();
+			StandardDeviation desvioPadrao = new StandardDeviation();
+			desvioPadrao.setData(matrix.getColumnVector(j).toArray());
+			double dp = desvioPadrao.evaluate();
 			
-			RealVector colunaj =  matrix.getColumnVector(j).mapDivide(u).mapDivide(v);
+//			Variance variance = new Variance();
+//			variance.setData(matrix.getColumnVector(j).toArray());
+//			double v = variance.evaluate();
+			
+			RealVector colunaj =  matrix.getColumnVector(j).mapDivide(u).mapDivide(dp);
 			R.setColumnVector(j, colunaj);
 		}
 		return R;
@@ -129,5 +134,21 @@ public class Exercicio1Functions {
 		}
 		R.setColumnVector(R.getColumnDimension() -1, labels);
 		return R;
+	}
+	
+	public String getClassificationAccuracy(RealVector labelsPreditos, RealVector labelsCorretos) {
+		int n = labelsCorretos.getDimension();
+		double contAcertos = 0;
+		double contErros = 0;
+		for (int i = 0; i < n; i++) {
+			if (labelsCorretos.getEntry(i) == labelsPreditos.getEntry(i)) {
+				contAcertos++;
+			} else {
+				contErros++;
+			}
+		}
+		return "Acertos: " + contAcertos +
+				"\nErros: " + contErros +
+				"\ntaxa de acerto na classificacao: " + ( (contAcertos * 100.0) / n );
 	}
 }

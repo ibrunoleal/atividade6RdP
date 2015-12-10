@@ -61,32 +61,26 @@ public class Exercicio1 {
 		 * Exercicio 1.8
 		 */
 		
-		/*
-		 * Utilizando SVM
-		 */
 		RealVector labelsLearning = f.matrixToLabels(Tl);
-//		SVM svm = new SVM(Xl, labelsLearning);
-//		
-//		List<Integer> labelsPreditos = new ArrayList<Integer>();
-//		for (int i = 0; i < Xt.getRowDimension(); i++) {
-//			RealVector elemento = Xt.getRowVector(i);
-//			int classe = (int)svm.classificar(elemento);
-//			labelsPreditos.add(classe);
-//		}
-//
-//
 		RealVector labelsTesting = f.matrixToLabels(Tt);
-//		System.out.println(labelsPreditos);
-//		System.out.println(labelsTesting);
 		
-		/*
-		 * Utilizando SVM2		
-		 */
+			/*
+			 * Utilizando SVM2		
+			 */
 		RealMatrix XLearningWeka = f.unirMatrixComLabels(Xl, labelsLearning);
+		RealMatrix XTestingWeka = f.unirMatrixComLabels(Xt, labelsTesting);
 		
 		ArrfCreator arrfCreator = new ArrfCreator();
 		arrfCreator.gerarArquivoArff(XLearningWeka, "xlearning");
+		arrfCreator.gerarArquivoArff(XTestingWeka, "xtesting");
 		
+		SVM svm2 = new SVM("data/xlearning.arff", "data/xtesting.arff");
+		RealVector labelsPreditos = svm2.getLabelsPreditos();
+
+		/*
+		 * Exercicio 1.9
+		 */
+		System.out.println(f.getClassificationAccuracy(labelsPreditos, labelsTesting));
 	}
 
 }

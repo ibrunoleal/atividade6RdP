@@ -1,123 +1,68 @@
 package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import weka.classifiers.functions.LibSVM;
-import weka.core.Attribute;
-import weka.core.FastVector;
-import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.converters.ConverterUtils.DataSource;
+
 
 public class SVM {
 	
-	
-	private RealMatrix dataLearning;
-	
-	private RealVector labelsLearning;
-	
-	private LibSVM libSVM;
-	
-	/**
-	 * Deve conter o numero de atributos de informacao + 1 para a classe(label)
-	 */
-	private FastVector atributos;
-	
-	private Instances instancias;
-	
-	public SVM(RealMatrix dataLearning, RealVector labelsLearning) {
-		this.dataLearning = dataLearning;
-		this.labelsLearning = labelsLearning;
-		this.libSVM = new LibSVM();
-		atributos = new FastVector(dataLearning.getColumnDimension() + 1);
-		
-		executar();
-	}
-	
-	private void executar() {
-		iniciarModeloDeAtributos();
-		instancias = new Instances("instancias", atributos, dataLearning.getRowDimension());
-		carregarInstancias();
-		treinar();
-	}
 
-	private void iniciarModeloDeAtributos() {
-		String name = "x";
-		for (int i = 1; i <= dataLearning.getColumnDimension(); i++) {
-			Attribute atributo = new Attribute(name + i);
-			atributos.addElement(atributo);
-		}
-		
-		List<Integer> labels = getDistinctLabels();
-		FastVector fvClassVal = new FastVector();
-		for (int i = 1; i <= labels.size() + 1; i++) {
-			fvClassVal.addElement(String.valueOf(i));
-		}
-		Attribute classAttribute = new Attribute("classe", fvClassVal);
-		atributos.addElement(classAttribute);
-	}
+	Instances instanciasDeTreinamento;
 	
-	private void carregarInstancias() {
-		for (int i = 0; i < dataLearning.getRowDimension(); i++) {
-			RealVector dados = dataLearning.getRowVector(i);
-			double[] c = {labelsLearning.getEntry(i)};
-			RealVector classe = new ArrayRealVector(c);
-			RealVector valores = dados.append(classe);
-
-			Instance instancia = new Instance(valores.getDimension());
-			for (int j = 0; j < valores.getDimension(); j++) {
-				instancia.setValue((Attribute)atributos.elementAt(j), valores.getEntry(j));
-				instancias.add(instancia);
-			}
-		}
-		instancias.setClassIndex(instancias.numAttributes() -1);
-	}
+	Instances instanciasDeTeste;
 	
-	private void treinar() {
+	LibSVM svm;
+	
+	public SVM(String trainingFileName, String testingFileName) {
 		try {
-			//String[] options = weka.core.Utils.splitOptions("-K 0 -D 3 -split-percentage 10");
-			//libSVM.setOptions(options);
-			libSVM.setDoNotReplaceMissingValues(true);
-			libSVM.buildClassifier(instancias);
+			DataSource dataSourceTraining = new DataSource(trainingFileName);
+			instanciasDeTreinamento = dataSourceTraining.getDataSet();
+			if (instanciasDeTreinamento.classIndex() == -1) {
+				instanciasDeTreinamento.setClassIndex(instanciasDeTreinamento.numAttributes() - 1);
+			}
+			
+			DataSource dataSourceTesting = new DataSource(testingFileName);
+			instanciasDeTeste = dataSourceTesting.getDataSet();
+			if (instanciasDeTeste.classIndex() == -1) {
+				instanciasDeTeste.setClassIndex(instanciasDeTeste.numAttributes() - 1);
+			}
+			
+			svm = new LibSVM();
+			svm.buildClassifier(instanciasDeTreinamento);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public double classificar(RealVector elemento) {
-		Instance instancia = new Instance(elemento.getDimension());
-		for (int j = 0; j < elemento.getDimension(); j++) {
-			instancia.setValue((Attribute)atributos.elementAt(j), elemento.getEntry(j));
-		}
-		
+	public RealVector getLabelsPreditos() {
+		RealVector labelsPreditos = new ArrayRealVector(instanciasDeTeste.numInstances());
 		try {
-			Instances instancias = new Instances("instanciaTesting", atributos, 0);
-			instancias.add(instancia);
-			instancias.setClassIndex(instancias.numAttributes() - 1);
-			
-			double classificacao = libSVM.classifyInstance(instancias.firstInstance());
-			return classificacao;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return -1;
-		}
-		
-	}
-	
-	private List<Integer> getDistinctLabels() {
-		List<Integer> classes = new ArrayList<Integer>();
-		for (int i = 0; i < labelsLearning.getDimension(); i++) {
-			int label = (int)labelsLearning.getEntry(i);
-			if (!classes.contains(label)) {
-				classes.add(label);
+			for (int i = 0; i < instanciasDeTeste.numInstances(); i++) {
+				double pred = svm.classifyInstance(instanciasDeTeste.instance(i));
+				labelsPreditos.setEntry(i, Double.parseDouble(instanciasDeTeste.classAttribute().value((int) pred)));
 			}
+			return labelsPreditos;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return classes;
+		return null;
 	}
 	
+	public int getClassificacaoPredita(int indiceDaInstanciaDeTeste) {
+		try {
+			double pred = svm.classifyInstance(instanciasDeTeste.instance(indiceDaInstanciaDeTeste));
+			return Integer.parseInt(instanciasDeTeste.classAttribute().value((int) pred));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
+	}
+
 }
