@@ -2,25 +2,29 @@ package br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos;
 
 public class ResultadoDeTeste {
 	
-	public static final double RESULTADO_NAO_DEFINIDO = -1.0;
+	public static final int RESULTADO_NAO_DEFINIDO = -1;
 	
 	private double acertos;
 	
 	private double erros;
 	
 	private double mse;
+	
+	private int tipoDeClassificadorUtilizado;
 
-	public ResultadoDeTeste(double acertos, double erros, double mse) {
+	public ResultadoDeTeste(double acertos, double erros) {
 		super();
 		this.acertos = acertos;
 		this.erros = erros;
-		this.mse = mse;
+		this.mse = RESULTADO_NAO_DEFINIDO;
+		this.tipoDeClassificadorUtilizado = RESULTADO_NAO_DEFINIDO;
 	}
 	
 	public ResultadoDeTeste() {
 		this.acertos = RESULTADO_NAO_DEFINIDO;
 		this.erros = RESULTADO_NAO_DEFINIDO;
 		this.mse = RESULTADO_NAO_DEFINIDO;
+		this.tipoDeClassificadorUtilizado = RESULTADO_NAO_DEFINIDO;
 	}
 	
 	public double getAcertos() {
@@ -45,6 +49,14 @@ public class ResultadoDeTeste {
 
 	public void setMse(double mse) {
 		this.mse = mse;
+	}
+
+	public int getTipoDeClassificadorUtilizado() {
+		return tipoDeClassificadorUtilizado;
+	}
+
+	public void setTipoDeClassificadorUtilizado(int tipoDeClassificadorUtilizado) {
+		this.tipoDeClassificadorUtilizado = tipoDeClassificadorUtilizado;
 	}
 
 	public double getAccuracy() {

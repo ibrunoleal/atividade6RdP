@@ -74,6 +74,7 @@ public class Testador {
 		ResultadoDeTeste resultado = getResultadoDeTeste(svmLabelsPreditos);
 		resultado.setMse(svm.getMSECalculado());
 		//resultado.setMse(svm.getMSEApi());
+		resultado.setTipoDeClassificadorUtilizado(CLASSIFICADOR_SVM);
 		return resultado;
 	}
 	
@@ -84,11 +85,16 @@ public class Testador {
 		ResultadoDeTeste resultado = getResultadoDeTeste(perceptronLabelsPreditos);
 		resultado.setMse(perceptron.getMSECalculado());
 		//resultado.setMse(perceptron.getMSEApi());
+		resultado.setTipoDeClassificadorUtilizado(CLASSIFICADOR_PERCEPTRON);
 		return resultado;
 	}
 	
 	private ResultadoDeTeste executarLDA() {
 		LDA lda = new LDA(dadosDeTreinamento.getData(), toIntVector(labelsDeTreinamento), true);
+		
+		/*
+		 *	Monta o vetor de labels preditos para o LDA 
+		 */
 		RealVector ldaLabelsPreditos = new ArrayRealVector(dadosDeTeste.getRowDimension());
 		for (int i = 0; i < dadosDeTeste.getRowDimension(); i++) {
 			RealVector xi = dadosDeTeste.getRowVector(i);
@@ -97,9 +103,17 @@ public class Testador {
 		}
 		
 		ResultadoDeTeste resultado = getResultadoDeTeste(ldaLabelsPreditos);
+		resultado.setTipoDeClassificadorUtilizado(CLASSIFICADOR_LDA);
 		return resultado;
 	}
 	
+	/**
+	 * Calcula a quantidade de acertos e erros para os dados de testing e gera o resultado de teste
+	 * @param labelsPreditos
+	 * 		conjunto de labels preditos
+	 * @return
+	 * 		um resultado de teste
+	 */
 	private ResultadoDeTeste getResultadoDeTeste(RealVector labelsPreditos) {
 		int n = labelsDeTeste.getDimension();
 		double contAcertos = 0;
@@ -112,7 +126,7 @@ public class Testador {
 			}
 		}
 		
-		ResultadoDeTeste resultado = new ResultadoDeTeste(contAcertos, contErros, ResultadoDeTeste.RESULTADO_NAO_DEFINIDO);
+		ResultadoDeTeste resultado = new ResultadoDeTeste(contAcertos, contErros);
 		return resultado;
 	}
 	
