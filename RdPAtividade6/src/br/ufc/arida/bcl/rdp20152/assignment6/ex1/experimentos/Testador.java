@@ -68,6 +68,8 @@ public class Testador {
 	}
 
 	private ResultadoDeTeste executarSVM() {
+		System.out.println("executando SVM.....  ");
+		long inicio = System.currentTimeMillis();
 		SVM svm = new SVM(PATH_ARQUIVO_DE_TREINAMENTO_WEKA, PATH_ARQUIVO_DE_TESTE_WEKA);
 		RealVector svmLabelsPreditos = svm.getLabelsPreditos();
 		
@@ -75,10 +77,14 @@ public class Testador {
 		resultado.setMse(svm.getMSECalculado());
 		//resultado.setMse(svm.getMSEApi());
 		resultado.setTipoDeClassificadorUtilizado(CLASSIFICADOR_SVM);
+		long fim  = System.currentTimeMillis();
+		System.out.println("... SVM execuçao terminada! Tempo = " + (fim - inicio) + "ms");
 		return resultado;
 	}
 	
 	private ResultadoDeTeste executarPerceptron() {
+		System.out.println("executando Perceptron.....  ");
+		long inicio = System.currentTimeMillis();
 		Perceptron perceptron = new Perceptron(PATH_ARQUIVO_DE_TREINAMENTO_WEKA, PATH_ARQUIVO_DE_TESTE_WEKA);
 		RealVector perceptronLabelsPreditos = perceptron.getLabelsPreditos();
 		
@@ -86,10 +92,14 @@ public class Testador {
 		resultado.setMse(perceptron.getMSECalculado());
 		//resultado.setMse(perceptron.getMSEApi());
 		resultado.setTipoDeClassificadorUtilizado(CLASSIFICADOR_PERCEPTRON);
+		long fim  = System.currentTimeMillis();
+		System.out.println("... Perceptron execuçao terminada!  Tempo = " + (fim - inicio) + "ms");
 		return resultado;
 	}
 	
 	private ResultadoDeTeste executarLDA() {
+		System.out.println("executando LDA.....  ");
+		long inicio = System.currentTimeMillis();
 		LDA lda = new LDA(dadosDeTreinamento.getData(), toIntVector(labelsDeTreinamento), true);
 		
 		/*
@@ -104,6 +114,8 @@ public class Testador {
 		
 		ResultadoDeTeste resultado = getResultadoDeTeste(ldaLabelsPreditos);
 		resultado.setTipoDeClassificadorUtilizado(CLASSIFICADOR_LDA);
+		long fim  = System.currentTimeMillis();
+		System.out.println("... LDA execuçao terminada! Tempo = " + (fim - inicio) + "ms");
 		return resultado;
 	}
 	

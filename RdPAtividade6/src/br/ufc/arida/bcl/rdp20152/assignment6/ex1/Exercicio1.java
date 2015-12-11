@@ -44,7 +44,7 @@ public class Exercicio1 {
 		 * Execucao de N vezes para analise
 		 */
 		Analisador analisador = new Analisador();
-		int N = 5;
+		int N = 3;
 		for (int i = 0; i < N; i++) {
 			/*
 			 * Exercicio 1.6
