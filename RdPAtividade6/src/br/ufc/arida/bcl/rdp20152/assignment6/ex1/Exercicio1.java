@@ -7,6 +7,8 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreator;
+import br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos.ResultadoDeTeste;
+import br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos.Testador;
 
 
 public class Exercicio1 {

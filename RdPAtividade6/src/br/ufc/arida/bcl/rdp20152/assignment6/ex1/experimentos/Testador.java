@@ -1,4 +1,4 @@
-package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
+package br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
@@ -6,6 +6,9 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreator;
+import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.LDA;
+import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.Perceptron;
+import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.SVM;
 
 public class Testador {
 	
