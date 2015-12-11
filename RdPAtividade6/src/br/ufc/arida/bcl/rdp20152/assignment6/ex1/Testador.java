@@ -67,13 +67,21 @@ public class Testador {
 	private ResultadoDeTeste executarSVM() {
 		SVM svm = new SVM(PATH_ARQUIVO_DE_TREINAMENTO_WEKA, PATH_ARQUIVO_DE_TESTE_WEKA);
 		RealVector svmLabelsPreditos = svm.getLabelsPreditos();
-		return getResultadoDeTeste(svmLabelsPreditos);
+		
+		ResultadoDeTeste resultado = getResultadoDeTeste(svmLabelsPreditos);
+		resultado.setMse(svm.getMSECalculado());
+		//resultado.setMse(svm.getMSEApi());
+		return resultado;
 	}
 	
 	private ResultadoDeTeste executarPerceptron() {
 		Perceptron perceptron = new Perceptron(PATH_ARQUIVO_DE_TREINAMENTO_WEKA, PATH_ARQUIVO_DE_TESTE_WEKA);
 		RealVector perceptronLabelsPreditos = perceptron.getLabelsPreditos();
-		return getResultadoDeTeste(perceptronLabelsPreditos);
+		
+		ResultadoDeTeste resultado = getResultadoDeTeste(perceptronLabelsPreditos);
+		resultado.setMse(perceptron.getMSECalculado());
+		//resultado.setMse(perceptron.getMSEApi());
+		return resultado;
 	}
 	
 	private ResultadoDeTeste executarLDA() {
@@ -84,7 +92,9 @@ public class Testador {
 			int labelPredito = lda.predict(xi.toArray());
 			ldaLabelsPreditos.setEntry(i, labelPredito);
 		}
-		return getResultadoDeTeste(ldaLabelsPreditos);
+		
+		ResultadoDeTeste resultado = getResultadoDeTeste(ldaLabelsPreditos);
+		return resultado;
 	}
 	
 	private ResultadoDeTeste getResultadoDeTeste(RealVector labelsPreditos) {
@@ -137,5 +147,4 @@ public class Testador {
 		}
 		return r;
 	}
-
 }
