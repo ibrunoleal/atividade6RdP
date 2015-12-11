@@ -31,7 +31,7 @@ public class ArrfCreator {
 		texto += "\n%\n%\n%";
 		
 		try {
-			FileWriter arquivo = new FileWriter("data/"+nomeDoArquivo+".arff");
+			FileWriter arquivo = new FileWriter(nomeDoArquivo);
 			PrintWriter escritorDeArquivo = new PrintWriter(arquivo);
 			escritorDeArquivo.print(texto);
 			escritorDeArquivo.close();

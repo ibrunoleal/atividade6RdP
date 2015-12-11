@@ -425,20 +425,20 @@ public class LDA {
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		int[] group = { 1, 1, 1, 1, 2, 2, 2 };
-		double[][] data = { { 2.95, 6.63 }, { 2.53, 7.79 }, { 3.57, 5.65 },
-				{ 3.16, 5.47 }, { 2.58, 4.46 }, { 2.16, 6.22 }, { 3.27, 3.52 } };
-
-		LDA test = new LDA(data, group, true);
-		double[] testData = { 2.81, 5.46 };
-		
-		//test
-		double[] values = test.getDiscriminantFunctionValues(testData);
-		for(int i = 0; i < values.length; i++){
-			System.out.println("Discriminant function " + (i+1) + ": " + values[i]);	
-		}
-		
-		System.out.println("Predicted group: " + test.predict(testData));
-	}
+//	public static void main(String[] args) {
+//		int[] group = { 1, 1, 1, 1, 2, 2, 2 };
+//		double[][] data = { { 2.95, 6.63 }, { 2.53, 7.79 }, { 3.57, 5.65 },
+//				{ 3.16, 5.47 }, { 2.58, 4.46 }, { 2.16, 6.22 }, { 3.27, 3.52 } };
+//
+//		LDA test = new LDA(data, group, true);
+//		double[] testData = { 2.81, 5.46 };
+//		
+//		//test
+//		double[] values = test.getDiscriminantFunctionValues(testData);
+//		for(int i = 0; i < values.length; i++){
+//			System.out.println("Discriminant function " + (i+1) + ": " + values[i]);	
+//		}
+//		
+//		System.out.println("Predicted group: " + test.predict(testData));
+//	}
 }

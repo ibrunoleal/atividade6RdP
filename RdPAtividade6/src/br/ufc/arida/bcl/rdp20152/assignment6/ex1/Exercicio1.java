@@ -2,6 +2,7 @@ package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
 
 import java.util.List;
 
+import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
@@ -59,42 +60,49 @@ public class Exercicio1 {
 		RealVector labelsLearning = f.matrixToLabels(Tl);
 		RealVector labelsTesting = f.matrixToLabels(Tt);
 		
-		
+		/* Prepara dados para entrada na API do weka */
 		RealMatrix XLearningWeka = f.unirMatrixComLabels(Xl, labelsLearning);
 		RealMatrix XTestingWeka = f.unirMatrixComLabels(Xt, labelsTesting);
-		
 		ArrfCreator arrfCreator = new ArrfCreator();
-		arrfCreator.gerarArquivoArff(XLearningWeka, "xlearning");
-		arrfCreator.gerarArquivoArff(XTestingWeka, "xtesting");
+		arrfCreator.gerarArquivoArff(XLearningWeka, "data/xlearning.arff");
+		arrfCreator.gerarArquivoArff(XTestingWeka, "data/xtesting.arff");
 		
-		/*
-		 * Utilizando SVM		
-		 */
+
+		/* Utilizando SVM */
 		
 		SVM svm = new SVM("data/xlearning.arff", "data/xtesting.arff");
 		RealVector svmLabelsPreditos = svm.getLabelsPreditos();
 		
-		Perceptron perceptron = new Perceptron("data/xlearning.arff", "data/xtesting.arff");
-		RealVector perceptronLabelsPreditos = perceptron.getLabelsPreditos();
+		System.out.println("\nSVM:");
+		System.out.println(f.getClassificationAccuracy(svmLabelsPreditos, labelsTesting));
 
 		/*
 		 * Exercicio 1.9
 		 */
-		System.out.println("\nSVM:");
-		System.out.println(f.getClassificationAccuracy(svmLabelsPreditos, labelsTesting));
-		System.out.println();
+		
+		/* Utilizando Perceptron */
+		Perceptron perceptron = new Perceptron("data/xlearning.arff", "data/xtesting.arff");
+		RealVector perceptronLabelsPreditos = perceptron.getLabelsPreditos();
+		
 		System.out.println("\nPerceptron:");
 		System.out.println(f.getClassificationAccuracy(perceptronLabelsPreditos, labelsTesting));
 		
-		int[] labelsL = new int[labelsLearning.getDimension()];
-		for (int i = 0; i < labelsLearning.getDimension(); i++) {
-			labelsL[i] = (int)labelsLearning.getEntry(i);
-		}
-		LDA lda = new LDA(Xl.getData(), labelsL, true);
+		/* Utilizando LDA */
+		LDA lda = new LDA(Xl.getData(), f.toIntVector(labelsLearning), true);
 		
-		RealVector vteste = Xt.getRowVector(0);
-		int predicao = lda.predict(vteste.toArray());
-		System.out.println(predicao);
+		RealVector ldaLabelsPreditos = new ArrayRealVector(Xt.getRowDimension());
+		for (int i = 0; i < Xt.getRowDimension(); i++) {
+			RealVector xi = Xt.getRowVector(i);
+			int labelPredito = lda.predict(xi.toArray());
+			ldaLabelsPreditos.setEntry(i, labelPredito);
+		}
+		System.out.println("\nLDA:");
+		System.out.println(f.getClassificationAccuracy(ldaLabelsPreditos, labelsTesting));
+		
+		/*
+		 * Exercicio 1.10
+		 */
+		
 	}
 
 }

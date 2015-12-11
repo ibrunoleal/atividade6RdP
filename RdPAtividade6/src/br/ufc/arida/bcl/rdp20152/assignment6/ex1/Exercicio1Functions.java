@@ -148,7 +148,15 @@ public class Exercicio1Functions {
 		}
 		return "Acertos: " + contAcertos +
 				"\nErros: " + contErros +
-				"\ntaxa de acerto na classificacao: " + ( (contAcertos * 100.0) / n );
+				"\ntaxa de acerto na classificacao: " + ( (contAcertos * 100.0) / n ) + "%";
+	}
+	
+	public int[] toIntVector(RealVector vetor) {
+		int[] r = new int[vetor.getDimension()];
+		for (int i = 0; i < vetor.getDimension(); i++) {
+			r[i] = (int)vetor.getEntry(i);
+		}
+		return r;
 	}
 	
 }
