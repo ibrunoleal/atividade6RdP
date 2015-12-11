@@ -60,48 +60,20 @@ public class Exercicio1 {
 		RealVector labelsLearning = f.matrixToLabels(Tl);
 		RealVector labelsTesting = f.matrixToLabels(Tt);
 		
-		/* Prepara dados para entrada na API do weka */
-		RealMatrix XLearningWeka = f.unirMatrixComLabels(Xl, labelsLearning);
-		RealMatrix XTestingWeka = f.unirMatrixComLabels(Xt, labelsTesting);
-		ArrfCreator arrfCreator = new ArrfCreator();
-		arrfCreator.gerarArquivoArff(XLearningWeka, "data/xlearning.arff");
-		arrfCreator.gerarArquivoArff(XTestingWeka, "data/xtesting.arff");
-		
-
-		/* Utilizando SVM */
-		
-		SVM svm = new SVM("data/xlearning.arff", "data/xtesting.arff");
-		RealVector svmLabelsPreditos = svm.getLabelsPreditos();
-		
-		System.out.println("\nSVM:");
-		System.out.println(f.getClassificationAccuracy(svmLabelsPreditos, labelsTesting));
 
 		/*
 		 * Exercicio 1.9
 		 */
 		
-		/* Utilizando Perceptron */
-		Perceptron perceptron = new Perceptron("data/xlearning.arff", "data/xtesting.arff");
-		RealVector perceptronLabelsPreditos = perceptron.getLabelsPreditos();
+		Testador testador = new Testador(Xl, labelsLearning, Xt, labelsTesting);
 		
-		System.out.println("\nPerceptron:");
-		System.out.println(f.getClassificationAccuracy(perceptronLabelsPreditos, labelsTesting));
+		ResultadoDeTeste resultadoSVM = testador.executar(Testador.CLASSIFICADOR_SVM);
+		ResultadoDeTeste resultadoPerceptron = testador.executar(Testador.CLASSIFICADOR_PERCEPTRON);
+		ResultadoDeTeste resultadoLDA = testador.executar(Testador.CLASSIFICADOR_LDA);
 		
-		/* Utilizando LDA */
-		LDA lda = new LDA(Xl.getData(), f.toIntVector(labelsLearning), true);
-		
-		RealVector ldaLabelsPreditos = new ArrayRealVector(Xt.getRowDimension());
-		for (int i = 0; i < Xt.getRowDimension(); i++) {
-			RealVector xi = Xt.getRowVector(i);
-			int labelPredito = lda.predict(xi.toArray());
-			ldaLabelsPreditos.setEntry(i, labelPredito);
-		}
-		System.out.println("\nLDA:");
-		System.out.println(f.getClassificationAccuracy(ldaLabelsPreditos, labelsTesting));
-		
-		/*
-		 * Exercicio 1.10
-		 */
+		System.out.println(resultadoSVM);
+		System.out.println(resultadoPerceptron);
+		System.out.println(resultadoLDA);
 		
 	}
 

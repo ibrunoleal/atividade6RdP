@@ -125,38 +125,4 @@ public class Exercicio1Functions {
 		return classes;
 	}
 	
-	public RealMatrix unirMatrixComLabels(RealMatrix matrix, RealVector labels) {
-		RealMatrix R = new Array2DRowRealMatrix(matrix.getRowDimension(), matrix.getColumnDimension() + 1);
-		for (int j = 0; j < matrix.getColumnDimension(); j++) {
-			RealVector colunaj = matrix.getColumnVector(j);
-			R.setColumnVector(j, colunaj);
-		}
-		R.setColumnVector(R.getColumnDimension() -1, labels);
-		return R;
-	}
-	
-	public String getClassificationAccuracy(RealVector labelsPreditos, RealVector labelsCorretos) {
-		int n = labelsCorretos.getDimension();
-		double contAcertos = 0;
-		double contErros = 0;
-		for (int i = 0; i < n; i++) {
-			if (labelsCorretos.getEntry(i) == labelsPreditos.getEntry(i)) {
-				contAcertos++;
-			} else {
-				contErros++;
-			}
-		}
-		return "Acertos: " + contAcertos +
-				"\nErros: " + contErros +
-				"\ntaxa de acerto na classificacao: " + ( (contAcertos * 100.0) / n ) + "%";
-	}
-	
-	public int[] toIntVector(RealVector vetor) {
-		int[] r = new int[vetor.getDimension()];
-		for (int i = 0; i < vetor.getDimension(); i++) {
-			r[i] = (int)vetor.getEntry(i);
-		}
-		return r;
-	}
-	
 }

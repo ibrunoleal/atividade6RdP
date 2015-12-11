@@ -1,6 +1,8 @@
 package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
 
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import weka.classifiers.functions.LibSVM;
@@ -52,6 +54,23 @@ public class SVM {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public double getMSE() {
+		RealMatrix D = new Array2DRowRealMatrix(instanciasDeTeste.numInstances(), instanciasDeTeste.classAttribute().numValues());
+		try {
+			for (int i = 0; i < instanciasDeTeste.numInstances(); i++) {
+				double[] d = svm.distributionForInstance(instanciasDeTeste.instance(i));
+				RealVector distribuicao = new ArrayRealVector(d);
+				D.setRowVector(i, distribuicao);
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return -1;
 	}
 	
 	public int getClassificacaoPredita(int indiceDaInstanciaDeTeste) {
