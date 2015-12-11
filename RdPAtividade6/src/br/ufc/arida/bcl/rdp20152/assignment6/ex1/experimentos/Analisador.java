@@ -3,9 +3,17 @@ package br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.RealVector;
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
+
 
 public class Analisador {
 	
+	/**
+	 * Lista de resultados de teste.
+	 * Obs.: Pode conter resultdados de diferentes tipos de classificadores.
+	 */
 	private List<ResultadoDeTeste> listaDeResultados;
 
 	public Analisador() {
@@ -26,7 +34,7 @@ public class Analisador {
 	 * @return
 	 * 		O maior valor de accuracy dentre todos os resultados desse tipo de classificador.
 	 */
-	public double getMaxAccuracy(int tipoDeClassificador) {
+	private double getMaxAccuracy(int tipoDeClassificador) {
 		List<ResultadoDeTeste> resultados = filtrarResultadosDesejados(tipoDeClassificador);
 		double max = -1;
 		for (ResultadoDeTeste resultadoDeTeste : resultados) {
@@ -46,7 +54,7 @@ public class Analisador {
 	 * @return
 	 * 		O menor valor de accuracy dentre todos os resultados desse tipo de classificador.
 	 */
-	public double getMinAccuracy(int tipoDeClassificador) {
+	private double getMinAccuracy(int tipoDeClassificador) {
 		List<ResultadoDeTeste> resultados = filtrarResultadosDesejados(tipoDeClassificador);
 		double min = Double.POSITIVE_INFINITY;
 		for (ResultadoDeTeste resultadoDeTeste : resultados) {
@@ -58,6 +66,45 @@ public class Analisador {
 	}
 	
 	/**
+	 * Recupera média(mean) de accuracy dentre os resultados do tipo de classificador desejado.
+	 * @param tipoDeClassificador
+	 * 		Tipo de classificador dos quais serão iutilizados os resultados. Os
+	 * 		resultados de outros tipos de classificadores serão ignorados.
+	 * 		Dica: utilizar as constantes da classe Testador.
+	 * @return
+	 * 		O valor médio(mean) de accuracy dentre todos os resultados desse tipo de classificador.
+	 */
+	private double getMeanAccuracy(int tipoDeClassificador) {
+		List<ResultadoDeTeste> resultados = filtrarResultadosDesejados(tipoDeClassificador);
+		double sum = 0;
+		for (ResultadoDeTeste resultadoDeTeste : resultados) {
+			sum += resultadoDeTeste.getAccuracy();
+		}
+		return sum / (double)resultados.size();
+	}
+	
+	/**
+	 * Recupera o desvio padrao da accuracy dentre os resultados do tipo de classificador desejado.
+	 * @param tipoDeClassificador
+	 * 		Tipo de classificador dos quais serão iutilizados os resultados. Os
+	 * 		resultados de outros tipos de classificadores serão ignorados.
+	 * 		Dica: utilizar as constantes da classe Testador.
+	 * @return
+	 * 		O desvio padrao de accuracy dentre todos os resultados desse tipo de classificador.
+	 */
+	private double getAccuracyStandardDeviation(int tipoDeClassificador) {
+		List<ResultadoDeTeste> resultados = filtrarResultadosDesejados(tipoDeClassificador);
+		RealVector valores = new ArrayRealVector(resultados.size());
+		StandardDeviation desviopadrao = new StandardDeviation();
+		
+		for (int i = 0; i < resultados.size(); i++) {
+			valores.setEntry(i, resultados.get(i).getAccuracy());
+		}
+		
+		return desviopadrao.evaluate(valores.toArray());
+	}
+	
+	/**
 	 * Filtra os resultados por tipo de classificador.
 	 * @param tipoDeClassificador
 	 * 		Tipo de classificador para filtrar os resultados de testes desejados. 
@@ -66,7 +113,7 @@ public class Analisador {
 	 * @return
 	 * 		Lista contendo apenas os resultados do tipo de classificador desejado.
 	 */
-	public List<ResultadoDeTeste> filtrarResultadosDesejados(int tipoDeClassificador) {
+	private List<ResultadoDeTeste> filtrarResultadosDesejados(int tipoDeClassificador) {
 		List<ResultadoDeTeste> resultadosDesejados = new ArrayList<ResultadoDeTeste>();
 		for (ResultadoDeTeste resultadoDeTeste : listaDeResultados) {
 			if (resultadoDeTeste.getTipoDeClassificadorUtilizado() == tipoDeClassificador) {
@@ -74,5 +121,30 @@ public class Analisador {
 			}
 		}
 		return resultadosDesejados;
+	}
+	
+	private int numeroDeResultadosDesejados(int tipoDeClassificador) {
+		int cont = 0;
+		for (ResultadoDeTeste resultadoDeTeste : listaDeResultados) {
+			if (resultadoDeTeste.getTipoDeClassificadorUtilizado() == tipoDeClassificador) {
+				cont++;
+			}
+		}
+		return cont;
+	}
+	
+	public String visualizarAnalise(int tipoDeClassificador) {
+		double minAccuracy = getMinAccuracy(tipoDeClassificador);
+		double maxAccuracy = getMaxAccuracy(tipoDeClassificador);
+		double meanAccuracy = getMeanAccuracy(tipoDeClassificador);
+		double desvioPadraoAccuracy = getAccuracyStandardDeviation(tipoDeClassificador);
+		int numeroDeResultados = numeroDeResultadosDesejados(tipoDeClassificador);
+		
+		String texto = "Analise para " + numeroDeResultados + " execuções: \n" +
+				"  -> Minimum classification rate: " + minAccuracy + "\n" +
+				"  -> Maximum classification rate: " + maxAccuracy + "\n" +
+				"  -> Mean classification rate: " + meanAccuracy + "\n" +
+				"  -> Standard Deviation of the classification rate: " + desvioPadraoAccuracy + "\n";
+		return texto;
 	}
 }
