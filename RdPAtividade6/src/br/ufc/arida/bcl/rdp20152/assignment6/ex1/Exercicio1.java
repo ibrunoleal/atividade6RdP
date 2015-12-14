@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos.Analisador;
-import br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos.ResultadoDeTeste;
 import br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos.Testador;
 
 
@@ -45,8 +45,9 @@ public class Exercicio1 {
 		 * Execucao de N vezes para analise
 		 */
 		Analisador analisador = new Analisador();
-		int N = 3;
+		int N = 30;
 		ExecutorService executor = Executors.newCachedThreadPool();
+		long inicio = System.currentTimeMillis();
 		for (int i = 0; i < N; i++) {
 			/*
 			 * Exercicio 1.6
@@ -96,6 +97,8 @@ public class Exercicio1 {
 		while(!executor.isTerminated()) {
 			//nao faz nada e fica aguardando.
 		}
+		long fim  = System.currentTimeMillis();
+		System.out.println("Tempo de execucao total = " + TimeUnit.MILLISECONDS.toSeconds(fim - inicio) + " segundos.");
 		
 		System.out.println("SVM Análise:\n");
 		System.out.println(analisador.visualizarAnalise(Testador.CLASSIFICADOR_SVM));
