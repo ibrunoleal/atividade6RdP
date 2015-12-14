@@ -10,7 +10,7 @@ import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.LDA;
 import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.Perceptron;
 import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.SVM;
 
-public class Testador {
+public class Testador extends Thread {
 	
 	public static final int CLASSIFICADOR_SVM = 1;
 	public static final int CLASSIFICADOR_PERCEPTRON = 2;
@@ -28,15 +28,46 @@ public class Testador {
 	
 	private RealVector labelsDeTeste;
 	
+	private int algoritmoAExecutar;
+	
+	private Analisador analisador;
+	
 	public Testador(RealMatrix dadosDeTreinamento, RealVector labelsDeTreinamento, RealMatrix dadosDeTeste,
-			RealVector labelsDeTeste) {
+			RealVector labelsDeTeste, int algoritmoAExecutar, Analisador analisador) {
 		super();
 		this.dadosDeTreinamento = dadosDeTreinamento;
 		this.labelsDeTreinamento = labelsDeTreinamento;
 		this.dadosDeTeste = dadosDeTeste;
 		this.labelsDeTeste = labelsDeTeste;
+		this.algoritmoAExecutar = algoritmoAExecutar;
+		this.analisador = analisador;
 		
 		criarArquivosParaWeka();
+	}
+	
+	public void run() {
+		ResultadoDeTeste resultado = null;
+
+		switch (algoritmoAExecutar) {
+		case (CLASSIFICADOR_SVM):
+			resultado = executarSVM();
+			break;
+		case (CLASSIFICADOR_PERCEPTRON):
+			resultado = executarPerceptron();
+			break;
+		case (CLASSIFICADOR_LDA):
+			resultado = executarLDA();
+			break;
+		default:
+			/* Nao faz nada */
+			System.out.println("Erro: Testador -> executar() -> nao foi indicado um algoritmo valido.");
+			break;
+		}
+		
+		synchronized (this) {
+			analisador.adicionarResultado(resultado);
+		}
+		
 	}
 	
 	/**

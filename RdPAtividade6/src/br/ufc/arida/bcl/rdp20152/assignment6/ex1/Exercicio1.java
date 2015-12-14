@@ -1,6 +1,9 @@
 package br.ufc.arida.bcl.rdp20152.assignment6.ex1;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
@@ -43,6 +46,7 @@ public class Exercicio1 {
 		 */
 		Analisador analisador = new Analisador();
 		int N = 3;
+		ExecutorService executor = Executors.newCachedThreadPool();
 		for (int i = 0; i < N; i++) {
 			/*
 			 * Exercicio 1.6
@@ -72,16 +76,27 @@ public class Exercicio1 {
 			 * Exercicio 1.9
 			 */
 			
-			Testador testador = new Testador(Xl, labelsLearning, Xt, labelsTesting);
+			Testador testadorSVM = new Testador(Xl, labelsLearning, Xt, labelsTesting, Testador.CLASSIFICADOR_SVM, analisador);
+			Testador testadorPerceptron = new Testador(Xl, labelsLearning, Xt, labelsTesting, Testador.CLASSIFICADOR_PERCEPTRON, analisador);
+			Testador testadorLDA = new Testador(Xl, labelsLearning, Xt, labelsTesting, Testador.CLASSIFICADOR_LDA, analisador);
+			executor.execute(testadorSVM);
+			executor.execute(testadorPerceptron);
+			executor.execute(testadorLDA);
 			
-			ResultadoDeTeste resultadoSVM = testador.executar(Testador.CLASSIFICADOR_SVM);
-			ResultadoDeTeste resultadoPerceptron = testador.executar(Testador.CLASSIFICADOR_PERCEPTRON);
-			ResultadoDeTeste resultadoLDA = testador.executar(Testador.CLASSIFICADOR_LDA);
-			analisador.adicionarResultado(resultadoSVM);
-			analisador.adicionarResultado(resultadoPerceptron);
-			analisador.adicionarResultado(resultadoLDA);
+			
+//			ResultadoDeTeste resultadoSVM = testador.executar(Testador.CLASSIFICADOR_SVM);
+//			ResultadoDeTeste resultadoPerceptron = testador.executar(Testador.CLASSIFICADOR_PERCEPTRON);
+//			ResultadoDeTeste resultadoLDA = testador.executar(Testador.CLASSIFICADOR_LDA);
+//			analisador.adicionarResultado(resultadoSVM);
+//			analisador.adicionarResultado(resultadoPerceptron);
+//			analisador.adicionarResultado(resultadoLDA);
 
 		}
+		executor.shutdown();
+		while(!executor.isTerminated()) {
+			//nao faz nada e fica aguardando.
+		}
+		
 		System.out.println("SVM Análise:\n");
 		System.out.println(analisador.visualizarAnalise(Testador.CLASSIFICADOR_SVM));
 		
