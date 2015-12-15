@@ -12,7 +12,11 @@ import br.ufc.arida.bcl.rdp20152.assignment6.entidades.Matriz;
 import br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos.Analisador;
 import br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos.Testador;
 
-
+/**
+ * Execucao do Exercicio 1
+ * @author Bruno Leal(ibrunoleal@gmail.com)
+ *
+ */
 public class Exercicio1 {
 
 	public static void main(String[] args) {
@@ -25,8 +29,6 @@ public class Exercicio1 {
 		 * Exercicio 1.2
 		 */
 		RealMatrix X = f.getDermatolgy_data().getSubMatrix(0, f.getDermatolgy_data().getRowDimension() -1, 0, f.getDermatolgy_data().getColumnDimension() - 2);
-		Matriz x = new Matriz(X);
-		System.out.println(x);
 				
 		/*
 		 * Exercicio 1.3

@@ -7,6 +7,13 @@ import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
+/**
+ * Classe para formatacao de saída de Matrizes.
+ * Depende da API Commons Math: The Apache Commons Mathematics
+ * Library 3.5 (https://commons.apache.org/proper/commons-math/)
+ * @author Bruno Leal(ibrunoleal@gmail.com)
+ *
+ */
 @SuppressWarnings("serial")
 public class Matriz extends Array2DRowRealMatrix {
 
@@ -57,6 +64,15 @@ public class Matriz extends Array2DRowRealMatrix {
 
 	}
 	
+	/**
+	 * Adiciona espaços ao final de um texto dado.
+	 * @param texto
+	 * 		Texto dado.
+	 * @param quantidadeDeEspacos
+	 * 		Quantidade de espaços a ser adicionado ao final do texto dado.
+	 * @return
+	 * 		O texto original adicionado dos espaços.
+	 */
 	private String adicionarEspacos(String texto, int quantidadeDeEspacos) {
 		String novoTexto = texto;
 		for (int i = 0; i < quantidadeDeEspacos; i++) {
@@ -64,9 +80,24 @@ public class Matriz extends Array2DRowRealMatrix {
 		}
 		return novoTexto;
 	}
+
 	
-	public String toTexString() {
-		DecimalFormat df = new DecimalFormat("0.00000");
+	/**
+	 * Forma o codigo latex referente a matriz.
+	 * @param quantidadeDeDecimais
+	 * 		Quantidade de "casas" decimais a serem consideradas após o ponto.
+	 * @return
+	 * 		Um texto contendo o codigo latex da matriz.
+	 */
+	public String toTexString(int quantidadeDeDecimais) {
+		String decimalformat = "0";
+		if (quantidadeDeDecimais > 0) {
+			decimalformat += ".";
+			for (int i = 0; i < quantidadeDeDecimais; i++) {
+				decimalformat += "0";
+			}
+		}
+		DecimalFormat df = new DecimalFormat(decimalformat);
 		
 		String texto = "$\n<nome> = \\begin{pmatrix}\n";
 		for (int i = 0; i < getRowDimension(); i++) {
@@ -87,11 +118,29 @@ public class Matriz extends Array2DRowRealMatrix {
 		return texto;
 	}
 	
-	public String toCSVString() {
+	/**
+	 * Forma o codigo CSV referente a matriz.
+	 * @param quantidadeDeDecimais
+	 * 		Quantidade de "casas" decimais a serem consideradas após o ponto.
+	 * @return
+	 * 		Um texto contendo o codigo CSV da matriz.
+	 */
+	public String toCSVString(int quantidadeDeDecimais) {
+		String decimalformat = "0";
+		if (quantidadeDeDecimais > 0) {
+			decimalformat += ".";
+			for (int i = 0; i < quantidadeDeDecimais; i++) {
+				decimalformat += "0";
+			}
+		}
+		DecimalFormat df = new DecimalFormat(decimalformat);
+		
+		/*
+		 * Forma a linha de cabecalho considerando que a ultima coluna
+		 * é o label dos elementos.
+		 * Comentar se não forem dados de classificação com labels ou se não desejar cabecalho.
+		 */
 		String texto = "";
-		
-		DecimalFormat df = new DecimalFormat("0.00000");
-		
 		String atributo = "X";
 		int contAtributo = 1;
 		for (int j = 0; j < getColumnDimension(); j++) {
@@ -103,6 +152,10 @@ public class Matriz extends Array2DRowRealMatrix {
 			contAtributo++;
 		}
 		
+		/*
+		 * Forma as linhas de dados propriamente ditas.
+		 * Obs.: o delimitador é comma(,)
+		 */
 		for (int i = 0; i < getRowDimension(); i++) {
 			for (int j = 0; j < getColumnDimension(); j++) {
 				String elemento = df.format(getEntry(i, j));
@@ -114,12 +167,11 @@ public class Matriz extends Array2DRowRealMatrix {
 					}
 				} else {
 					texto += elemento;
-					texto += ",";
+					texto += ","; // para alterar o delimitador mude essa linha
 				}
 				
 			}
 		}
-		//texto += "\n\\end{pmatrix}\n$";
 		return texto;
 	}
 	
@@ -127,8 +179,9 @@ public class Matriz extends Array2DRowRealMatrix {
 	 * Metodo auxiliar para formatacao de saída da matriz.
 	 * Recupera a quantidade de digitos do elemento da matriz com a
 	 * maior quantidade de dígitos.
-	 * @return a quantidade de dígitos do elemento com mais dígitos
-	 * nam matriz.
+	 * @return
+	 * 		a quantidade de dígitos do elemento com mais dígitos
+	 * 		nam matriz.
 	 */
 	private int getMaiorQuantidadeDeDigitos() {
 		int maior = 0;

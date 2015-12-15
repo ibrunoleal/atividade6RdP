@@ -8,7 +8,12 @@ import java.io.LineNumberReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileHandler {
+/**
+ * Classe para leitura de dados numericos de arquivos em formato de matriz.
+ * @author Bruno Leal(ibrunoleal@gmail.com)
+ *
+ */
+public class MatrizFileHandler {
 	
 	/**
 	 * nome(ou path) do arquivo que contem o dataset
@@ -29,7 +34,7 @@ public class FileHandler {
 	 * 		Texto que separa um elemento de linha do elemento seguinte.
 	 * 		Exemplo: a "," em arquivos CSV ou um espaço.
 	 */
-	public FileHandler(String arquivo, String delimitador) {
+	public MatrizFileHandler(String arquivo, String delimitador) {
 		this.arquivo = arquivo;
 		this.delimitador = delimitador;
 	}
@@ -63,7 +68,7 @@ public class FileHandler {
 	 * Obs.: se o arquivo representar os dados de uma matriz, computará o numero 
 	 * de colunas de uma matriz.
 	 * @return
-	 * 		o numero de elementos na primeira linha do arquivo.
+	 * 		O numero de elementos na primeira linha do arquivo.
 	 */
 	public int getNumeroDeColunas() {
 		FileReader fileReader;
@@ -92,14 +97,69 @@ public class FileHandler {
 	}
 	
 	/**
+	 * Recupera os elementos de uma dada linha do arquivo.
+	 * @param numLinha
+	 * 		O numero da linha do aquivo do qual serão recuperados os elementos.
+	 * 		Obs.: a primeira linha é dada por 0.
+	 * @return
+	 * 		Uma List contendo os elementos da linha dada.
+	 */
+	public List<Double> getLineAsList(int numLinha) {
+		FileReader fileReader;
+		int numeroDeLinhas = getNumeroDeLinhas();
+		List<Double> vetor = new ArrayList<Double>();
+		
+		if (numLinha <= numeroDeLinhas) {
+			try {
+				fileReader = new FileReader(arquivo);
+				BufferedReader br = new BufferedReader(fileReader);
+				for (int i = 0; i < (numLinha - 1); i++) {
+					br.readLine();
+				}
+				String linha = br.readLine();
+				String[] valores  = linha.split(delimitador);
+				for (int i = 0; i < valores.length; i++) {
+					vetor.add(Double.parseDouble(valores[i]));
+				}
+				br.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return vetor;
+		}
+		return null;
+	}
+	
+	/**
+	 * Recupera os elementos de uma dada linha do arquivo.
+	 * @param numLine
+	 * 		O numero da linha do aquivo do qual serão recuperados os elementos.
+	 * 		Obs.: a primeira linha é dada por 0.
+	 * @return
+	 * 		Um vetor contendo os elementos da linha dada.
+	 */
+	public double[] getLineAsArray(int numLine) {
+		List<Double> lista = getLineAsList(numLine);
+		double[] vetor = new double[lista.size()];
+		for (int i = 0; i < lista.size(); i++) {
+			vetor[i] = lista.get(i);
+		}
+		return vetor;
+	}
+	
+	/**
 	 * Recupera os elementos de uma dada coluna do arquivo.
-	 * @param coluna
+	 * @param numColumn
 	 * 		O numero da coluna do aquivo do qual serão recuperados os elementos.
 	 * 		Obs.: a primeira coluna é dada por 0.
 	 * @return
 	 * 		Uma List contendo os elementos da coluna dada.
 	 */
-	public List<Double> getColumnAsList(int coluna) {
+	public List<Double> getColumnAsList(int numColumn) {
 		FileReader fileReader;
 		int numeroDeLinhas = getNumeroDeLinhas();
 		List<Double> vetor = new ArrayList<Double>();
@@ -113,7 +173,7 @@ public class FileHandler {
 				while (linha != null) {
 					String[] valores = linha.split(delimitador);
 					
-					double valor = Double.parseDouble(valores[coluna]);
+					double valor = Double.parseDouble(valores[numColumn]);
 					vetor.add(valor);
 					linha = br.readLine();
 				}
@@ -133,14 +193,14 @@ public class FileHandler {
 	
 	/**
 	 * Recupera os elementos de uma dada coluna do arquivo.
-	 * @param coluna
+	 * @param numColumn
 	 * 		O numero da coluna do aquivo do qual serão recuperados os elementos.
 	 * 		Obs.: a primeira coluna é dada por 0.
 	 * @return
 	 * 		Um vetor contendo os elementos da coluna dada.
 	 */
-	public double[] getColumnAsArray(int coluna) {
-		List<Double> lista = getColumnAsList(coluna);
+	public double[] getColumnAsArray(int numColumn) {
+		List<Double> lista = getColumnAsList(numColumn);
 		double[] vetor = new double[lista.size()];
 		for (int i = 0; i < lista.size(); i++) {
 			vetor[i] = lista.get(i);
