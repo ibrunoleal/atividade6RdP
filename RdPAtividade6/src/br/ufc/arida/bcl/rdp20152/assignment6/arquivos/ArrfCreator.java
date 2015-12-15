@@ -11,6 +11,12 @@ import java.util.List;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
+/**
+ * Cria um arquivo .arff (formato padrao do WEKA) a partir dos dados de uma matriz.
+ * Obs.: considera que a ultima coluna da matriz são os labels.
+ * @author Bruno Leal(ibrunoleal@gmail.com)
+ *
+ */
 public class ArrfCreator {
 	
 	public void gerarArquivoArff(RealMatrix matrix, String nomeDoArquivo) {
