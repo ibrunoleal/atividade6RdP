@@ -7,7 +7,7 @@ import org.apache.commons.math3.linear.RealVector;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreator;
 import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.LDA;
-import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.Perceptron;
+import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.PerceptronWeka;
 import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.SVM;
 
 public class Testador extends Thread {
@@ -116,7 +116,7 @@ public class Testador extends Thread {
 	private ResultadoDeTeste executarPerceptron() {
 		System.out.println("executando Perceptron.....  ");
 		long inicio = System.currentTimeMillis();
-		Perceptron perceptron = new Perceptron(PATH_ARQUIVO_DE_TREINAMENTO_WEKA, PATH_ARQUIVO_DE_TESTE_WEKA);
+		PerceptronWeka perceptron = new PerceptronWeka(PATH_ARQUIVO_DE_TREINAMENTO_WEKA, PATH_ARQUIVO_DE_TESTE_WEKA);
 		RealVector perceptronLabelsPreditos = perceptron.getLabelsPreditos();
 		
 		ResultadoDeTeste resultado = getResultadoDeTeste(perceptronLabelsPreditos);
