@@ -6,7 +6,6 @@ import org.apache.commons.math3.linear.RealVector;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.regressores.SVR;
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreatorToRegression;
-import br.ufc.arida.bcl.rdp20152.assignment6.entidades.Matriz;
 import br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos.Testador;
 
 public class Exercicio2 {
@@ -21,16 +20,13 @@ public class Exercicio2 {
 			RealVector vi = f.getDataLearning().getRowVector(i).append(f.getLabelslearning().getEntry(i));
 			L.setRowVector(i, vi);
 		}
-		
-//		System.out.println(new Matriz(L));
+
 		
 		RealMatrix T = new Array2DRowRealMatrix(f.getDataTesting().getRowDimension(), f.getDataTesting().getColumnDimension() + 1);
 		for (int i = 0; i < f.getDataTesting().getRowDimension(); i++) {
 			RealVector vi = f.getDataTesting().getRowVector(i).append(f.getLabelsTesting().getEntry(i));
 			T.setRowVector(i, vi);
 		}
-		
-//		System.out.println(new Matriz(T));
 
 		ArrfCreatorToRegression arrfCreatorL = new ArrfCreatorToRegression();
 		arrfCreatorL.gerarArquivoArff(L, Testador.PATH_ARQUIVO_DE_TREINAMENTO_WEKA);

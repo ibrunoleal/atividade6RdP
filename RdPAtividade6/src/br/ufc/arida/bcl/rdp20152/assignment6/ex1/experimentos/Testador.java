@@ -8,10 +8,7 @@ import org.apache.commons.math3.linear.RealVector;
 import br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.classificadores.LDA;
 import br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.classificadores.MOAPerceptron;
 import br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.classificadores.SVM;
-import br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.regressores.SVR;
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreatorToClassify;
-import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreatorToRegression;
-import weka.gui.arffviewer.ArffTableCellRenderer;
 
 public class Testador extends Thread {
 	

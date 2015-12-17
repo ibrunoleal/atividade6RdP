@@ -3,7 +3,6 @@ package br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.regressores;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 
-import br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos.ResultadoDeTeste;
 import weka.classifiers.functions.SMOreg;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
