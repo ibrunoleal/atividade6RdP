@@ -7,7 +7,7 @@ import org.apache.commons.math3.linear.RealVector;
 
 import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreator;
 import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.LDA;
-import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.PerceptronWeka;
+import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.MOAPerceptron;
 import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.SVM;
 
 public class Testador extends Thread {
@@ -116,7 +116,7 @@ public class Testador extends Thread {
 	private ResultadoDeTeste executarPerceptron() {
 		System.out.println("executando Perceptron.....  ");
 		long inicio = System.currentTimeMillis();
-		PerceptronWeka perceptron = new PerceptronWeka(PATH_ARQUIVO_DE_TREINAMENTO_WEKA, PATH_ARQUIVO_DE_TESTE_WEKA);
+		MOAPerceptron perceptron = new MOAPerceptron(PATH_ARQUIVO_DE_TREINAMENTO_WEKA, PATH_ARQUIVO_DE_TESTE_WEKA);
 		RealVector perceptronLabelsPreditos = perceptron.getLabelsPreditos();
 		
 		ResultadoDeTeste resultado = getResultadoDeTeste(perceptronLabelsPreditos);
@@ -131,7 +131,7 @@ public class Testador extends Thread {
 	private ResultadoDeTeste executarLDA() {
 		System.out.println("executando LDA.....  ");
 		long inicio = System.currentTimeMillis();
-		LDA lda = new LDA(dadosDeTreinamento.getData(), toIntVector(labelsDeTreinamento), true);
+		LDA lda = new LDA(dadosDeTreinamento.getData(), toIntArray(labelsDeTreinamento), true);
 		
 		/*
 		 *	Monta o vetor de labels preditos para o LDA 
@@ -200,7 +200,7 @@ public class Testador extends Thread {
 		return R;
 	}
 	
-	private int[] toIntVector(RealVector vetor) {
+	private int[] toIntArray(RealVector vetor) {
 		int[] r = new int[vetor.getDimension()];
 		for (int i = 0; i < vetor.getDimension(); i++) {
 			r[i] = (int)vetor.getEntry(i);

@@ -8,8 +8,7 @@ public class TestePerceptron {
 	public static void main(String[] args) {
 		
 		MOAPerceptron perceptron = new MOAPerceptron(Testador.PATH_ARQUIVO_DE_TREINAMENTO_WEKA, Testador.PATH_ARQUIVO_DE_TESTE_WEKA);
-		perceptron.executar();
-
+		perceptron.getLabelsPreditos();
 	}
 
 }
