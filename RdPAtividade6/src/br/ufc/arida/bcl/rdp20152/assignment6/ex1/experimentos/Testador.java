@@ -96,36 +96,53 @@ public class Testador extends Thread {
 		return resultado;
 	}
 
+	/**
+	 * Executa o classificador SVM com base nos dados dos atributos
+	 * de treinamento e teste.
+	 * @return
+	 * 		uma instancia de ResultadoDeTeste contendo os valores resultantes
+	 * 		da execucao do classificador.
+	 */
 	private ResultadoDeTeste executarSVM() {
 		System.out.println("executando SVM.....  ");
 		long inicio = System.currentTimeMillis();
 		SVM svm = new SVM(PATH_ARQUIVO_DE_TREINAMENTO_WEKA, PATH_ARQUIVO_DE_TESTE_WEKA);
 		RealVector svmLabelsPreditos = svm.getLabelsPreditos();
 		
-		ResultadoDeTeste resultado = getResultadoDeTeste(svmLabelsPreditos);
+		ResultadoDeTeste resultado = getResultadoDeTeste(Testador.CLASSIFICADOR_SVM, svmLabelsPreditos);
 		resultado.setMse(svm.getMSECalculado());
-		//resultado.setMse(svm.getMSEApi());
-		resultado.setTipoDeClassificadorUtilizado(CLASSIFICADOR_SVM);
 		long fim  = System.currentTimeMillis();
 		System.out.println("... SVM execuçao terminada! Tempo = " + (fim - inicio) + "ms");
 		return resultado;
 	}
 	
+	/**
+	 * Executa o classificador Perceptron com base nos dados dos atributos
+	 * de treinamento e teste.
+	 * @return
+	 * 		uma instancia de ResultadoDeTeste contendo os valores resultantes
+	 * 		da execucao do classificador.
+	 */
 	private ResultadoDeTeste executarPerceptron() {
 		System.out.println("executando Perceptron.....  ");
 		long inicio = System.currentTimeMillis();
 		MOAPerceptron perceptron = new MOAPerceptron(PATH_ARQUIVO_DE_TREINAMENTO_WEKA, PATH_ARQUIVO_DE_TESTE_WEKA);
 		RealVector perceptronLabelsPreditos = perceptron.getLabelsPreditos();
 		
-		ResultadoDeTeste resultado = getResultadoDeTeste(perceptronLabelsPreditos);
+		ResultadoDeTeste resultado = getResultadoDeTeste(Testador.CLASSIFICADOR_PERCEPTRON, perceptronLabelsPreditos);
 		resultado.setMse(perceptron.getMSECalculado());
-		//resultado.setMse(perceptron.getMSEApi());
-		resultado.setTipoDeClassificadorUtilizado(CLASSIFICADOR_PERCEPTRON);
 		long fim  = System.currentTimeMillis();
 		System.out.println("... Perceptron execuçao terminada!  Tempo = " + (fim - inicio) + "ms");
 		return resultado;
 	}
 	
+	/**
+	 * Executa o classificador LDA com base nos dados dos atributos
+	 * de treinamento e teste.
+	 * @return
+	 * 		uma instancia de ResultadoDeTeste contendo os valores resultantes
+	 * 		da execucao do classificador.
+	 */
 	private ResultadoDeTeste executarLDA() {
 		System.out.println("executando LDA.....  ");
 		long inicio = System.currentTimeMillis();
@@ -141,8 +158,7 @@ public class Testador extends Thread {
 			ldaLabelsPreditos.setEntry(i, labelPredito);
 		}
 		
-		ResultadoDeTeste resultado = getResultadoDeTeste(ldaLabelsPreditos);
-		resultado.setTipoDeClassificadorUtilizado(CLASSIFICADOR_LDA);
+		ResultadoDeTeste resultado = getResultadoDeTeste(Testador.CLASSIFICADOR_LDA, ldaLabelsPreditos);
 		long fim  = System.currentTimeMillis();
 		System.out.println("... LDA execuçao terminada! Tempo = " + (fim - inicio) + "ms");
 		return resultado;
@@ -155,7 +171,7 @@ public class Testador extends Thread {
 	 * @return
 	 * 		um resultado de teste
 	 */
-	private ResultadoDeTeste getResultadoDeTeste(RealVector labelsPreditos) {
+	private ResultadoDeTeste getResultadoDeTeste(int tipoDeClassificador, RealVector labelsPreditos) {
 		int n = labelsDeTeste.getDimension();
 		double contAcertos = 0;
 		double contErros = 0;
@@ -167,10 +183,15 @@ public class Testador extends Thread {
 			}
 		}
 		
-		ResultadoDeTeste resultado = new ResultadoDeTeste(contAcertos, contErros);
+		ResultadoDeTeste resultado = new ResultadoDeTeste(tipoDeClassificador, contAcertos, contErros);
 		return resultado;
 	}
 	
+	/**
+	 * Cria, com base nos dados, dois arquivos no formato ARFF do WEKA.
+	 * Obs.: O caminho e o nome dos arquivos estao definidos nas constantes
+	 * desta classe (Testador).
+	 */
 	private void criarArquivosParaWeka() {
 		RealMatrix XLearningWeka = unirMatrixComLabels(dadosDeTreinamento, labelsDeTreinamento);
 		RealMatrix XTestingWeka = unirMatrixComLabels(dadosDeTeste, labelsDeTeste);

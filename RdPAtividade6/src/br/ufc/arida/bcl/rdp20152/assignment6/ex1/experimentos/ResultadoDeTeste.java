@@ -4,27 +4,55 @@ public class ResultadoDeTeste {
 	
 	public static final int RESULTADO_NAO_DEFINIDO = -1;
 	
+	/**
+	 * Numero de instancias classificadas corretamente.
+	 */
 	private double acertos;
 	
+	/**
+	 * Numero de instancias classificadas erroneamente.
+	 */
 	private double erros;
 	
+	/**
+	 * Mean Squared Error das instancias classificadas.
+	 * Obs.: O MSE de cada instancia é dado
+	 * por (1 - valor de probabilidade da classificacao predita). 
+	 */
 	private double mse;
 	
+	/**
+	 *	Tipo de classificador utilizado para a obtencao do resultado. 
+	 */
 	private int tipoDeClassificadorUtilizado;
 
-	public ResultadoDeTeste(double acertos, double erros) {
+	/**
+	 * Representa o resultado de uma execucao.
+	 * Obs.: os demais atributos sao inicializados
+	 * como NAO definidos (constante da classe)
+	 * @param acertos
+	 * 		Numero de classificacoes preditas corretamente.
+	 * @param erros
+	 * 		Numero de classificacoes preditas erroneamente.
+	 */
+	public ResultadoDeTeste(int tipoDeClassificador, double acertos, double erros) {
 		super();
 		this.acertos = acertos;
 		this.erros = erros;
 		this.mse = RESULTADO_NAO_DEFINIDO;
-		this.tipoDeClassificadorUtilizado = RESULTADO_NAO_DEFINIDO;
+		this.tipoDeClassificadorUtilizado = tipoDeClassificador;
 	}
 	
-	public ResultadoDeTeste() {
+	/**
+	 * Representa o resultado de uma execucao.
+	 * Os valores de resultado sao inicializados como
+	 * NAO definidos(constante da classe).
+	 */
+	public ResultadoDeTeste(int tipoDeClassificador) {
 		this.acertos = RESULTADO_NAO_DEFINIDO;
 		this.erros = RESULTADO_NAO_DEFINIDO;
 		this.mse = RESULTADO_NAO_DEFINIDO;
-		this.tipoDeClassificadorUtilizado = RESULTADO_NAO_DEFINIDO;
+		this.tipoDeClassificadorUtilizado = tipoDeClassificador;
 	}
 	
 	public double getAcertos() {
@@ -55,10 +83,22 @@ public class ResultadoDeTeste {
 		return tipoDeClassificadorUtilizado;
 	}
 
-	public void setTipoDeClassificadorUtilizado(int tipoDeClassificadorUtilizado) {
-		this.tipoDeClassificadorUtilizado = tipoDeClassificadorUtilizado;
-	}
+//	/**
+//	 * Define qual o classificador utilizado na execucao do teste.
+//	 * @param tipoDeClassificadorUtilizado
+//	 * 		Classificador utilizado.
+//	 * 		Obs.: classificador definido de acordo
+//	 * 		com as constantes da classe Testador.
+//	 */
+//	public void setTipoDeClassificadorUtilizado(int tipoDeClassificadorUtilizado) {
+//		this.tipoDeClassificadorUtilizado = tipoDeClassificadorUtilizado;
+//	}
 
+	/**
+	 * Calcula a % instancias classificadas corretamente.
+	 * @return
+	 * 		O valor em % de instancias classificadas corretamente.
+	 */
 	public double getAccuracy() {
 		if (acertos != RESULTADO_NAO_DEFINIDO && erros != RESULTADO_NAO_DEFINIDO) {
 			return (acertos * 100) / (acertos + erros);
