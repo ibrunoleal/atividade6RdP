@@ -46,7 +46,7 @@ public class Exercicio1 {
 		
 		
 		Analisador analisador = new Analisador();
-		int N = 3;
+		int N = 30;
 		ExecutorService executor = Executors.newCachedThreadPool();
 		long inicio = System.currentTimeMillis();
 		
@@ -98,13 +98,13 @@ public class Exercicio1 {
 		long fim  = System.currentTimeMillis();
 		System.out.println("Tempo de execucao total = " + TimeUnit.MILLISECONDS.toSeconds(fim - inicio) + " segundos.");
 		
-		System.out.println("SVM Análise:\n");
+		System.out.println("\nSVM Análise:");
 		System.out.println(analisador.getAnalise(Testador.CLASSIFICADOR_SVM));
 		
-		System.out.println("Perceptron Análise:\n");
+		System.out.println("\nPerceptron Análise:");
 		System.out.println(analisador.getAnalise(Testador.CLASSIFICADOR_PERCEPTRON));
 		
-		System.out.println("LDA Análise:\n");
+		System.out.println("\nLDA Análise:");
 		System.out.println(analisador.getAnalise(Testador.CLASSIFICADOR_LDA));
 	}
 
