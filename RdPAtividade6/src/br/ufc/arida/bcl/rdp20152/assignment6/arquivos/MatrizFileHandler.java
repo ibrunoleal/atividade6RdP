@@ -77,13 +77,13 @@ public class MatrizFileHandler {
 		try {
 			fileReader = new FileReader(arquivo);
 			BufferedReader br = new BufferedReader(fileReader);
-			
 			String linha = br.readLine();
-			if (linha != null) {
-				String[] elementos = linha.split(delimitador);
-				numeroDeColunas = elementos.length;
-			}
 			br.close();
+			numeroDeColunas = getElementosDaLinha(linha).size();
+//			if (linha != null) {
+//				String[] elementos = linha.split(delimitador);
+//				numeroDeColunas = elementos.length;
+//			}
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -117,10 +117,11 @@ public class MatrizFileHandler {
 					br.readLine();
 				}
 				String linha = br.readLine();
-				String[] valores  = linha.split(delimitador);
-				for (int i = 0; i < valores.length; i++) {
-					vetor.add(Double.parseDouble(valores[i]));
-				}
+				vetor = getElementosDaLinha(linha);
+//				String[] valores  = linha.split(delimitador);
+//				for (int i = 0; i < valores.length; i++) {
+//					vetor.add(Double.parseDouble(valores[i]));
+//				}
 				br.close();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -170,10 +171,9 @@ public class MatrizFileHandler {
 				BufferedReader br = new BufferedReader(fileReader);
 
 				String linha = br.readLine();
-				while (linha != null) {
-					String[] valores = linha.split(delimitador);
-					
-					double valor = Double.parseDouble(valores[numColumn]);
+				while (linha != null) {	
+					List<Double> linhaList = getElementosDaLinha(linha);
+					double valor = linhaList.get(numColumn);
 					vetor.add(valor);
 					linha = br.readLine();
 				}
@@ -229,6 +229,25 @@ public class MatrizFileHandler {
 			}
 		}
 		return matriz;	
+	}
+	
+	/**
+	 * Dado uma linha da matriz em formato texto, forma uma lista de elementos
+	 * double com os valores da linha da matriz.
+	 * @param linha
+	 * 		O texto referente a linha da matriz.
+	 * @return
+	 * 		Uma List com os elementos da linha.
+	 */
+	public List<Double> getElementosDaLinha(String linha) {
+		String[] valoresTexto = linha.split(delimitador);
+		List<Double> lista = new ArrayList<Double>();
+		for (String valor : valoresTexto) {
+			if (!valor.equalsIgnoreCase("")) {
+				lista.add(Double.parseDouble(valor));
+			}
+		}
+		return lista;
 	}
 	
 }
