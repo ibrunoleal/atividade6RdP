@@ -64,9 +64,7 @@ public class Testador extends Thread {
 			break;
 		}
 		
-		synchronized (this) {
-			analisador.adicionarResultado(resultado);
-		}
+		analisador.adicionarResultado(resultado);
 		
 	}
 	

@@ -21,7 +21,7 @@ public class Analisador {
 		listaDeResultados = new ArrayList<ResultadoDeTeste>();
 	}
 	
-	public void adicionarResultado(ResultadoDeTeste resultado) {
+	public synchronized void adicionarResultado(ResultadoDeTeste resultado) {
 		listaDeResultados.add(resultado);
 	}
 	
@@ -219,9 +219,9 @@ public class Analisador {
 		int numeroDeResultados = numeroDeResultadosDesejados(tipoDeClassificador);
 		
 		String texto = "Analise para " + numeroDeResultados + " execuções: \n" +
-				"  -> Minimum classification rate: " + minAccuracy + "\n" +
-				"  -> Maximum classification rate: " + maxAccuracy + "\n" +
-				"  -> Mean classification rate: " + meanAccuracy + "\n" +
+				"  -> Minimum classification rate: " + minAccuracy + "%\n" +
+				"  -> Maximum classification rate: " + maxAccuracy + "%\n" +
+				"  -> Mean classification rate: " + meanAccuracy + "%\n" +
 				"  -> Standard Deviation of the classification rate: " + desvioPadraoAccuracy + "\n" +
 				"  -> Minimum MSE: " + minMSE + "\n" +
 				"  -> Maximum MSE: " + maxMSE + "\n" +
