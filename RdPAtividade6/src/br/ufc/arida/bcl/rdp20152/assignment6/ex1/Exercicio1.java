@@ -99,13 +99,13 @@ public class Exercicio1 {
 		System.out.println("Tempo de execucao total = " + TimeUnit.MILLISECONDS.toSeconds(fim - inicio) + " segundos.");
 		
 		System.out.println("SVM Análise:\n");
-		System.out.println(analisador.visualizarAnalise(Testador.CLASSIFICADOR_SVM));
+		System.out.println(analisador.getAnalise(Testador.CLASSIFICADOR_SVM));
 		
 		System.out.println("Perceptron Análise:\n");
-		System.out.println(analisador.visualizarAnalise(Testador.CLASSIFICADOR_PERCEPTRON));
+		System.out.println(analisador.getAnalise(Testador.CLASSIFICADOR_PERCEPTRON));
 		
 		System.out.println("LDA Análise:\n");
-		System.out.println(analisador.visualizarAnalise(Testador.CLASSIFICADOR_LDA));
+		System.out.println(analisador.getAnalise(Testador.CLASSIFICADOR_LDA));
 	}
 
 	

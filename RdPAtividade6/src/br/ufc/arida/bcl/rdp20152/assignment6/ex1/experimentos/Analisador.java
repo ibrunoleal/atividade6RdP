@@ -105,6 +105,64 @@ public class Analisador {
 	}
 	
 	/**
+	 * Recupera a maior MSE dentre os resultados do tipo de classificador desejado.
+	 * @param tipoDeClassificador
+	 * 		Tipo de classificador dos quais serão iutilizados os resultados. Os
+	 * 		resultados de outros tipos de classificadores serão ignorados.
+	 * 		Dica: utilizar as constantes da classe Testador.
+	 * @return
+	 * 		O maior valor de MSE dentre todos os resultados desse tipo de classificador.
+	 */
+	private double getMaxMSE(int tipoDeClassificador) {
+		List<ResultadoDeTeste> resultados = filtrarResultadosDesejados(tipoDeClassificador);
+		double max = Double.NEGATIVE_INFINITY;
+		for (ResultadoDeTeste resultadoDeTeste : resultados) {
+			if (resultadoDeTeste.getMse() > max) {
+				max = resultadoDeTeste.getMse();
+			}
+		}
+		return max;
+	}
+	
+	/**
+	 * Recupera a menor MSE dentre os resultados do tipo de classificador desejado.
+	 * @param tipoDeClassificador
+	 * 		Tipo de classificador dos quais serão iutilizados os resultados. Os
+	 * 		resultados de outros tipos de classificadores serão ignorados.
+	 * 		Dica: utilizar as constantes da classe Testador.
+	 * @return
+	 * 		O menor valor de MSE dentre todos os resultados desse tipo de classificador.
+	 */
+	private double getMinMSE(int tipoDeClassificador) {
+		List<ResultadoDeTeste> resultados = filtrarResultadosDesejados(tipoDeClassificador);
+		double min = Double.POSITIVE_INFINITY;
+		for (ResultadoDeTeste resultadoDeTeste : resultados) {
+			if (resultadoDeTeste.getMse() < min) {
+				min = resultadoDeTeste.getMse();
+			}
+		}
+		return min;
+	}
+	
+	/**
+	 * Recupera média(mean) de MSE dentre os resultados do tipo de classificador desejado.
+	 * @param tipoDeClassificador
+	 * 		Tipo de classificador dos quais serão iutilizados os resultados. Os
+	 * 		resultados de outros tipos de classificadores serão ignorados.
+	 * 		Dica: utilizar as constantes da classe Testador.
+	 * @return
+	 * 		O valor médio(mean) de MSE dentre todos os resultados desse tipo de classificador.
+	 */
+	private double getMeanMSE(int tipoDeClassificador) {
+		List<ResultadoDeTeste> resultados = filtrarResultadosDesejados(tipoDeClassificador);
+		double sum = 0;
+		for (ResultadoDeTeste resultadoDeTeste : resultados) {
+			sum += resultadoDeTeste.getMse();
+		}
+		return sum / (double)resultados.size();
+	}
+	
+	/**
 	 * Filtra os resultados por tipo de classificador.
 	 * @param tipoDeClassificador
 	 * 		Tipo de classificador para filtrar os resultados de testes desejados. 
@@ -123,6 +181,13 @@ public class Analisador {
 		return resultadosDesejados;
 	}
 	
+	/**
+	 * Contabiliza quantos resultados de teste dentre todos sao do tipo desejado.
+	 * @param tipoDeClassificador
+	 * 		Tipo de classificador para filtrar os resultados de testes desejados.
+	 * @return
+	 * 		O numero de resultados de teste para o tipo de classificador informado.
+	 */		
 	private int numeroDeResultadosDesejados(int tipoDeClassificador) {
 		int cont = 0;
 		for (ResultadoDeTeste resultadoDeTeste : listaDeResultados) {
@@ -133,18 +198,34 @@ public class Analisador {
 		return cont;
 	}
 	
-	public String visualizarAnalise(int tipoDeClassificador) {
+	/**
+	 * Resultado analitico contendo:
+	 * 		valores maximo, minimo e medio de accuracy;
+	 * 		desvio padrao da accuracy;
+	 * 		valores maximo, minimo e medio de MSE.
+	 * @param tipoDeClassificador
+	 * 		Tipo de classificador para filtrar os resultados de testes desejados.
+	 * @return
+	 * 		Um texto contendo o resumo de analise para o classificador informado.
+	 */
+	public String getAnalise(int tipoDeClassificador) {
 		double minAccuracy = getMinAccuracy(tipoDeClassificador);
 		double maxAccuracy = getMaxAccuracy(tipoDeClassificador);
 		double meanAccuracy = getMeanAccuracy(tipoDeClassificador);
 		double desvioPadraoAccuracy = getAccuracyStandardDeviation(tipoDeClassificador);
+		double minMSE = getMinMSE(tipoDeClassificador);
+		double maxMSE = getMaxMSE(tipoDeClassificador);
+		double meanMSE = getMeanMSE(tipoDeClassificador);
 		int numeroDeResultados = numeroDeResultadosDesejados(tipoDeClassificador);
 		
 		String texto = "Analise para " + numeroDeResultados + " execuções: \n" +
 				"  -> Minimum classification rate: " + minAccuracy + "\n" +
 				"  -> Maximum classification rate: " + maxAccuracy + "\n" +
 				"  -> Mean classification rate: " + meanAccuracy + "\n" +
-				"  -> Standard Deviation of the classification rate: " + desvioPadraoAccuracy + "\n";
+				"  -> Standard Deviation of the classification rate: " + desvioPadraoAccuracy + "\n" +
+				"  -> Minimum MSE: " + minMSE + "\n" +
+				"  -> Maximum MSE: " + maxMSE + "\n" +
+				"  -> Mean MSE: " + meanMSE;	
 		return texto;
 	}
 }

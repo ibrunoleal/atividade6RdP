@@ -33,6 +33,7 @@ package br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores;
 import java.util.ArrayList;
 
 import Jama.Matrix;
+import br.ufc.arida.bcl.rdp20152.assignment6.ex1.experimentos.ResultadoDeTeste;
 
 public class LDA {
 	private double[][] groupMean;
