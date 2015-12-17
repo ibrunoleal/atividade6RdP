@@ -1,4 +1,4 @@
-package br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores;
+package br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.classificadores;
 
 /**
  * Copyright (c) 2014, Version, 0.2, Dr. Wolfgang Lenhard, Psychometrica.de

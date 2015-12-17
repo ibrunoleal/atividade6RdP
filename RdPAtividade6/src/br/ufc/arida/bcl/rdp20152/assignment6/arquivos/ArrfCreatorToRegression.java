@@ -4,23 +4,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.RealVector;
 
-/**
- * Cria um arquivo .arff (formato padrao do WEKA) a partir dos dados de uma matriz.
- * Obs.: considera que a ultima coluna da matriz são os labels.
- * @author Bruno Leal(ibrunoleal@gmail.com)
- *
- */
-public class ArrfCreator {
+public class ArrfCreatorToRegression {
 	
 	public void gerarArquivoArff(RealMatrix matrix, String nomeDoArquivo) {
-		
 		String texto = getNomeRelation(nomeDoArquivo);
 		texto += "\n\n";
 		
@@ -28,9 +17,7 @@ public class ArrfCreator {
 			texto += getDeclaracaoDeAtributo(i+1) + "\n";
 		}
 		
-		RealVector colunaDeLabels = matrix.getColumnVector(matrix.getColumnDimension() - 1);
-		List<Integer> classes = getDistinctLabels(colunaDeLabels);
-		texto += getDeclaracaoDeClasse(classes) + "\n\n";
+		texto += getDeclaracaoDeClasse() + "\n\n";
 		
 		texto += getData(matrix);
 		
@@ -48,18 +35,6 @@ public class ArrfCreator {
 		}
 	}
 	
-	private List<Integer> getDistinctLabels(RealVector colunaDeLabels) {
-		List<Integer> classes = new ArrayList<Integer>();
-		for (int i = 0; i < colunaDeLabels.getDimension(); i++) {
-			int label = (int)colunaDeLabels.getEntry(i);
-			if (!classes.contains(label)) {
-				classes.add(label);
-			}
-		}
-		Collections.sort(classes);
-		return classes;
-	}
-	
 	private String getNomeRelation(String nomeDaRelacao) {
 		return "@RELATION " + nomeDaRelacao.toLowerCase();
 	}
@@ -68,15 +43,8 @@ public class ArrfCreator {
 		return "@ATTRIBUTE 'X" + numeroDoAtributo + "' NUMERIC";
 	}
 	
-	private String getDeclaracaoDeClasse(List<Integer> classes) {
-		String texto = "@ATTRIBUTE 'class' {";
-		for (int i = 0; i < classes.size(); i++) {
-			if ( !(i == classes.size() - 1)) {
-				texto += classes.get(i) + ",";
-			} else {
-				texto += classes.get(i) + "}";
-			}
-		}
+	private String getDeclaracaoDeClasse() {
+		String texto = "@ATTRIBUTE 'class' NUMERIC";
 		return texto;
 	}
 	
@@ -88,7 +56,7 @@ public class ArrfCreator {
 				String elemento = String.valueOf(df.format(matrix.getEntry(i, j)));
 				
 				if (j == (matrix.getColumnDimension() -1)) {
-					texto += (int)Double.parseDouble(elemento);
+					texto += Double.parseDouble(elemento);
 					if (i != (matrix.getRowDimension() -1)) {
 						texto += "\n";
 					}

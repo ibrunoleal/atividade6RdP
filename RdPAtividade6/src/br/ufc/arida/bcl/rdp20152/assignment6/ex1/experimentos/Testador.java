@@ -5,16 +5,19 @@ import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
-import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreator;
-import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.LDA;
-import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.MOAPerceptron;
-import br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores.SVM;
+import br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.classificadores.LDA;
+import br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.classificadores.MOAPerceptron;
+import br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.classificadores.SVM;
+import br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.regressores.SVR;
+import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreatorToClassify;
+import br.ufc.arida.bcl.rdp20152.assignment6.arquivos.ArrfCreatorToRegression;
+import weka.gui.arffviewer.ArffTableCellRenderer;
 
 public class Testador extends Thread {
 	
-	public static final int CLASSIFICADOR_SVM = 1;
-	public static final int CLASSIFICADOR_PERCEPTRON = 2;
-	public static final int CLASSIFICADOR_LDA = 3;
+	public static final int CLASSIFICADOR_SVM = 111;
+	public static final int CLASSIFICADOR_PERCEPTRON = 112;
+	public static final int CLASSIFICADOR_LDA = 113;
 	
 	public static final String PATH_ARQUIVO_DE_TREINAMENTO_WEKA = "data/learning.arff";
 	
@@ -68,33 +71,35 @@ public class Testador extends Thread {
 		
 	}
 	
-	/**
-	 * Valor que indica qual o algoritmo escolhido.
-	 * @param
-	 * 		algoritmoEscolhido indica qual o classificador a ser utilizado.
-	 * 		Dica: utilizar as constantes globais da classe.
-	 */
-	public ResultadoDeTeste executar(int algoritmoEscolhido) {
-		ResultadoDeTeste resultado = null;
 
-		switch (algoritmoEscolhido) {
-		case (CLASSIFICADOR_SVM):
-			resultado = executarSVM();
-			break;
-		case (CLASSIFICADOR_PERCEPTRON):
-			resultado = executarPerceptron();
-			break;
-		case (CLASSIFICADOR_LDA):
-			resultado = executarLDA();
-			break;
-		default:
-			/* Nao faz nada */
-			System.out.println("Erro: Testador -> executar() -> nao foi indicado um algoritmo valido.");
-			break;
-		}
-
-		return resultado;
-	}
+//	/**
+//	 * Valor que indica qual o algoritmo escolhido.
+//	 * @param
+//	 * 		algoritmoEscolhido indica qual o classificador a ser utilizado.
+//	 * 		Dica: utilizar as constantes globais da classe.
+//	 */
+//	public ResultadoDeTeste executar(int algoritmoEscolhido) {
+//		ResultadoDeTeste resultado = null;
+//
+//		switch (algoritmoEscolhido) {
+//		case (CLASSIFICADOR_SVM):
+//			resultado = executarSVM();
+//			break;
+//		case (CLASSIFICADOR_PERCEPTRON):
+//			resultado = executarPerceptron();
+//			break;
+//		case (CLASSIFICADOR_LDA):
+//			resultado = executarLDA();
+//			break;
+//		default:
+//			/* Nao faz nada */
+//			System.out.println("Erro: Testador -> executar() -> nao foi indicado um algoritmo valido.");
+//			break;
+//		}
+//
+//		return resultado;
+//	}
+	
 
 	/**
 	 * Executa o classificador SVM com base nos dados dos atributos
@@ -195,7 +200,8 @@ public class Testador extends Thread {
 	private void criarArquivosParaWeka() {
 		RealMatrix XLearningWeka = unirMatrixComLabels(dadosDeTreinamento, labelsDeTreinamento);
 		RealMatrix XTestingWeka = unirMatrixComLabels(dadosDeTeste, labelsDeTeste);
-		ArrfCreator arrfCreator = new ArrfCreator();
+
+		ArrfCreatorToClassify arrfCreator = new ArrfCreatorToClassify();
 		arrfCreator.gerarArquivoArff(XLearningWeka, PATH_ARQUIVO_DE_TREINAMENTO_WEKA);
 		arrfCreator.gerarArquivoArff(XTestingWeka, PATH_ARQUIVO_DE_TESTE_WEKA);
 	}

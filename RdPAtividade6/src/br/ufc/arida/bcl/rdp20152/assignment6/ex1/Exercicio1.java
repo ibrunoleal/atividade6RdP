@@ -46,7 +46,7 @@ public class Exercicio1 {
 		
 		
 		Analisador analisador = new Analisador();
-		int N = 50;
+		int N = 3;
 		ExecutorService executor = Executors.newCachedThreadPool();
 		long inicio = System.currentTimeMillis();
 		

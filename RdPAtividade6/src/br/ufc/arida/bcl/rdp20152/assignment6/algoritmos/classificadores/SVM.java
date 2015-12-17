@@ -1,4 +1,4 @@
-package br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores;
+package br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.classificadores;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;

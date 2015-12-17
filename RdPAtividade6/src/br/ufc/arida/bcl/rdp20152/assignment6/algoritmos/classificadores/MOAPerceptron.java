@@ -1,4 +1,4 @@
-package br.ufc.arida.bcl.rdp20152.assignment6.ex1.classificadores;
+package br.ufc.arida.bcl.rdp20152.assignment6.algoritmos.classificadores;
 
 import java.util.Enumeration;
 
