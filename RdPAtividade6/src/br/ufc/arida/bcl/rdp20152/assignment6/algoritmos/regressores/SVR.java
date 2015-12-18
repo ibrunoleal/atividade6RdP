@@ -7,13 +7,15 @@ import weka.classifiers.functions.SMOreg;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
 
-public class SVR {
+public class SVR extends Thread {
 	
 	Instances instanciasDeTreinamento;
 	
 	Instances instanciasDeTeste;
 	
 	SMOreg svr;
+	
+	RealVector refOutput;
 	
 	public SVR(String trainingFileName, String testingFileName) {
 		try {
@@ -36,7 +38,6 @@ public class SVR {
 			e.printStackTrace();
 		}
 	}
-	
 	
 	public RealVector getLabelsPreditos() {
 		RealVector labelsPreditos = new ArrayRealVector(instanciasDeTeste.numInstances());

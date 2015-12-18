@@ -55,5 +55,31 @@ public class Exercicio2Functions {
 		return labelsTesting;
 	}
 	
+	public double getMSE(RealVector yPreditos, RealVector yOutput) {
+		int n = yPreditos.getDimension();
+		double sum = 0.0;
+		for (int i = 0; i < n; i++) {
+			sum += Math.pow(yPreditos.getEntry(i) - yOutput.getEntry(i), 2);
+		}
+		return sum / n;
+	}
 	
+	/**
+	 * 
+	 * @param matrix
+	 *		cada linha da matriz representa uma instancia de dado.
+	 * @param labels
+	 * 		cada elemento do vetor representa a classe(label) da linah correspondente da matriz.
+	 * @return
+	 * 		a matriz de entrada com uma coluna adicional com os valores de labels.
+	 */
+	public RealMatrix unirMatrixComLabels(RealMatrix matrix, RealVector labels) {
+		RealMatrix R = new Array2DRowRealMatrix(matrix.getRowDimension(), matrix.getColumnDimension() + 1);
+		for (int j = 0; j < matrix.getColumnDimension(); j++) {
+			RealVector colunaj = matrix.getColumnVector(j);
+			R.setColumnVector(j, colunaj);
+		}
+		R.setColumnVector(R.getColumnDimension() -1, labels);
+		return R;
+	}
 }
