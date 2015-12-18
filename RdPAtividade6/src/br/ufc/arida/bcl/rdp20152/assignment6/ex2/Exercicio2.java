@@ -3,8 +3,6 @@ package br.ufc.arida.bcl.rdp20152.assignment6.ex2;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
@@ -43,49 +41,49 @@ public class Exercicio2 {
 		/*
 		 * SVR
 		 */
-//		SVR svr = new SVR(Testador.PATH_ARQUIVO_DE_TREINAMENTO_WEKA, Testador.PATH_ARQUIVO_DE_TESTE_WEKA);
-//		System.out.println("SVR measured outputs:");
-//		System.out.println(f.getLabelsTesting());
-//		RealVector labelsSVR = svr.getLabelsPreditos();
-//		System.out.println("SVR predicted outputs:");
-//		System.out.println(labelsSVR);
-//		
-//			/*
-//			 * SVR - Grafico de Medidos x Preditos 
-//			 */
-//		GraficoDePontos2D gSVR = new GraficoDePontos2D("SVR");
-//		gSVR.adicionarPontos2D("SVR", f.getLabelsTesting().toArray(), labelsSVR.toArray());
-//		gSVR.exibirGrafico();
-//		
-//			/*
-//			 * SVR - MSE
-//			 */
-//		System.out.println("\nSVR MSE: " + f.getMSE(labelsSVR, f.getLabelsTesting()));
-//		
-//		List<Ponto2D> pontosSVRPreditos = new ArrayList<Ponto2D>();
-//		List<Ponto2D> pontosSVRMedidos = new ArrayList<Ponto2D>();
-//		double xi = 0;
-//		for (int i = 0; i < f.getLabelsTesting().getDimension(); i++) {
-//			xi += 1;
-//			Ponto2D pi = new Ponto2D(xi, labelsSVR.getEntry(i));
-//			pontosSVRPreditos.add(pi);
-//			Ponto2D pm = new Ponto2D(xi, f.getLabelsTesting().getEntry(i));
-//			pontosSVRMedidos.add(pm);
-//		}
-//			/*
-//			 * SVR - Grafico de Ordem da Instancia x Valor Predito
-//			 */
-//		GraficoDePontos2D gSVRPredito = new GraficoDePontos2D("SVR Predito");
-//		gSVRPredito.adicionarLinha("SVR Predito", pontosSVRPreditos);
-//		gSVRPredito.exibirGrafico();
-//		
-//			/*
-//			 * Grafico de Ordem da Instancia x Valor Predito (independente de regressor)
-//			 */
-//		GraficoDePontos2D gSVRMedido = new GraficoDePontos2D("SVR Label");
-//		gSVRMedido.adicionarLinha("SVR Medido", pontosSVRMedidos);
-//		gSVRMedido.exibirGrafico();
-//		
+		SVR svr = new SVR(Testador.PATH_ARQUIVO_DE_TREINAMENTO_WEKA, Testador.PATH_ARQUIVO_DE_TESTE_WEKA);
+		System.out.println("SVR measured outputs:");
+		System.out.println(f.getLabelsTesting());
+		RealVector labelsSVR = svr.getLabelsPreditos();
+		System.out.println("SVR predicted outputs:");
+		System.out.println(labelsSVR);
+		
+			/*
+			 * SVR - Grafico de Medidos x Preditos 
+			 */
+		GraficoDePontos2D gSVR = new GraficoDePontos2D("SVR");
+		gSVR.adicionarPontos2D("SVR", f.getLabelsTesting().toArray(), labelsSVR.toArray());
+		gSVR.exibirGrafico();
+		
+			/*
+			 * SVR - MSE
+			 */
+		System.out.println("\nSVR MSE: " + f.getMSE(labelsSVR, f.getLabelsTesting()));
+		
+		List<Ponto2D> pontosSVRPreditos = new ArrayList<Ponto2D>();
+		List<Ponto2D> pontosSVRMedidos = new ArrayList<Ponto2D>();
+		double xi = 0;
+		for (int i = 0; i < f.getLabelsTesting().getDimension(); i++) {
+			xi += 1;
+			Ponto2D pi = new Ponto2D(xi, labelsSVR.getEntry(i));
+			pontosSVRPreditos.add(pi);
+			Ponto2D pm = new Ponto2D(xi, f.getLabelsTesting().getEntry(i));
+			pontosSVRMedidos.add(pm);
+		}
+			/*
+			 * SVR - Grafico de Ordem da Instancia x Valor Predito
+			 */
+		GraficoDePontos2D gSVRPredito = new GraficoDePontos2D("SVR Predito");
+		gSVRPredito.adicionarLinha("SVR Predito", pontosSVRPreditos);
+		gSVRPredito.exibirGrafico();
+		
+			/*
+			 * Grafico de Ordem da Instancia x Valor Predito (independente de regressor)
+			 */
+		GraficoDePontos2D gSVRMedido = new GraficoDePontos2D("SVR Label");
+		gSVRMedido.adicionarLinha("SVR Medido", pontosSVRMedidos);
+		gSVRMedido.exibirGrafico();
+		
 		System.out.println("\n-----------------------------------------------\n");
 		
 		/*

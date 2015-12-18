@@ -31,6 +31,8 @@ public class GPR {
 			
 			
 			gpr = new GaussianProcesses();
+			String[] opt = {"-N", "2"};
+			gpr.setOptions(opt);;
 			gpr.buildClassifier(instanciasDeTreinamento);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
